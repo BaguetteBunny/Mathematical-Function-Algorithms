@@ -24,21 +24,41 @@ def plot(func, true_func, x=None, step=2, domain=[-50,50]):
     plt.legend()
     plt.show()
 
-"""
+class ConstantRegistry:
+    """
     Constants
-        π       pi()         Pi
-        τ       tau()        Tau
-        e       e()          Euler's number
-        φ       phi()        Golden Ratio
-        y       euler()      Euler's constant
-"""
+        π   Pi
+        τ   Tau
+        e   Euler's number
+        φ   Golden Ratio
+        y   Euler's constant
+    """
+    def __init__(self):
+        self.registry = {}
 
-# https://en.wikipedia.org/wiki/Fibonacci_sequence#Relation_to_the_golden_ratio
-def phi():
+    def register(self, name, func, method_name="default", description="Error: No description provided."):
+        if name not in self.registry:
+            self.registry[name] = {}
+        self.registry[name][method_name] = {
+            "func": func,
+            "desc": description
+        }
+
+    def get(self, name, method_name="default", print_description=False):
+        if print_description:
+            print(self.registry[name][method_name]["desc"])
+        return self.registry[name][method_name]["func"]
+    
+    def available(self):
+        return {
+            const: list(methods.keys())
+            for const, methods in self.registry.items()
+        }
+    
+def phi(): # https://en.wikipedia.org/wiki/Fibonacci_sequence#Relation_to_the_golden_ratio
     return (1+5**0.5)/2
 
-# https://en.wikipedia.org/wiki/Chudnovsky_algorithm
-def pi(n=5):
+def chudnovsky_pi(n=5): # https://en.wikipedia.org/wiki/Chudnovsky_algorithm
     inverse_pi = 0
     for k in range(n+1):
         numerator = ((-1)**k) * factorial(6*k) * (545140134*k + 13591409)
@@ -46,17 +66,13 @@ def pi(n=5):
         inverse_pi += numerator/denominator
     return (1/(inverse_pi))/12
 
-#https://en.wikipedia.org/wiki/Tau_(mathematics)
-def tau(n=5):
-    return 2*pi(n)
+def tau(pi_function=chudnovsky_pi, n=5): #https://en.wikipedia.org/wiki/Tau_(mathematics)
+    return 2*pi_function(n)
 
-# https://en.wikipedia.org/wiki/E_(mathematical_constant)
-def e(n=100):
+def exp_e(n=100): # https://en.wikipedia.org/wiki/E_(mathematical_constant)
     return exp(1, n)
 
-# https://en.wikipedia.org/wiki/Monte_Carlo_integration
-def fun_e(n=100):
-    """This is terrible. Don't use this. It's just a demonstration of how to use the Monte Carlo method to approximate e."""
+def montecarlo_e(n=100): # https://en.wikipedia.org/wiki/Monte_Carlo_integration
     values = 0
     for _ in range(n):
         x=0
@@ -65,27 +81,44 @@ def fun_e(n=100):
             values += 1
     return values/n
 
-# https://en.wikipedia.org/wiki/Euler%27s_constant#Integrals
-def euler(n=100_000):
+def euler_gamma(n=100_000): # https://en.wikipedia.org/wiki/Euler%27s_constant#Integrals
     return sum(1/k - ln(1 + 1/k) for k in range(1, n+1))
 
 
-"""
+class FunctionRegistry:
+    """
     Functions
-        Ƒ(n)        fibonnaci(n)        Fibonnaci Sequence
-        n!          factorial(n)        Factorial Function
-        eⁿ          exp(n)              Exponential Function
-        ln(n)       ln(n)               Natural Logarithm Function
-        sin(n)      sin(n)              Sine Function
-        Γ(n)        gamma(n)            Gamma Function
-"""
+        Ƒ(n)        Fibonnaci Sequence
+        n!          Factorial Function
+        eⁿ          Exponential Function
+        ln(n)       Natural Logarithm Function
+        sin(n)      Sine Function
+        Γ(n)        Gamma Function
+    """
+    def __init__(self):
+        self.registry = {}
 
-#https://en.wikipedia.org/wiki/Fibonacci_sequence#Relation_to_the_golden_ratio
-def fibonnaci(n, phi=phi()):
+    def register(self, name, method_name, description, func):
+        if name not in self.registry:
+            self.registry[name] = {}
+        self.registry[name][method_name] = {
+            "func": func,
+            "desc": description
+        }
+
+    def get(self, name, method_name="default"):
+        return self.registry[name][method_name]["func"]
+    
+    def available(self):
+        return {
+            const: list(methods.keys())
+            for const, methods in self.registry.items()
+        }
+
+def fibonnaci(n, phi=phi()): #https://en.wikipedia.org/wiki/Fibonacci_sequence#Relation_to_the_golden_ratio
     return int((phi**n - (-phi)**(-n))/(2*phi-1))
 
-# Factorial function using incremented multiplications
-def factorial(x):
+def factorial(x): # Factorial function using incremented multiplications
     assert isinstance(x,int) and x>=0
     if x<2:
         return 1
@@ -93,22 +126,19 @@ def factorial(x):
         x*=i
     return x
 
-# https://en.wikipedia.org/wiki/Taylor_series
-def exp(x,n=100):
+def exp(x,n=100): # https://en.wikipedia.org/wiki/Taylor_series
     final = 0
     for k in range(0,n+1):
         final+=(x**k)/factorial(k)
     return final
 
-# https://en.wikipedia.org/wiki/Newton%27s_method
-def ln(x, n=1e-10):
+def ln(x, n=1e-10): # https://en.wikipedia.org/wiki/Newton%27s_method
     y = 1
     while abs(exp(y,20) - x) > n:
         y = y-1 + x/exp(y,20)
     return y
 
-# https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
-def sin(x, pi=pi()):
+def sin(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
     x %= 2*pi
     if x>pi:
         x -= 2*pi
@@ -121,8 +151,7 @@ def sin(x, pi=pi()):
         sign *= -1
     return result
 
-# https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
-def cos(x, pi=pi()):
+def cos(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Taylor_series#Trigonometric_functions
     x %= 2*pi
     if x>pi:
         x -= 2*pi
@@ -135,8 +164,7 @@ def cos(x, pi=pi()):
         sign *= -1
     return result
 
-# https://en.wikipedia.org/wiki/Gamma_function
-def gamma(x, pi=pi()):
+def gamma(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Gamma_function
     # Recursion limit
     if abs(x-1) < 1e-8:
         return 1
@@ -154,5 +182,35 @@ def gamma(x, pi=pi()):
         return (x-1)*gamma(x-1)
     return pi/(sin(pi*x)*gamma(1-x))
 
+"""
+    Constants
+        π       pi()         Pi
+        τ       tau()        Tau
+        e       e()          Euler's number
+        φ       phi()        Golden Ratio
+        y       euler()      Euler's constant
+"""
+
+#constants.register(name="", method_name="", description="", func=)
+constants = ConstantRegistry()
+constants.register(name="phi", method_name="default", description="Generates golden ratio.", func=phi)
+constants.register(name="pi", method_name="chudnovsky", description="Generates pi using the Chudnovsky algorithm based on Ramanujan's pi formulae.", func=chudnovsky_pi)
+constants.register(name="tau", method_name="default", description="Generates tau, the ratio of a circle's circumferance.", func=tau)
+constants.register(name="e", method_name="exp", description="Generates e by using the exponential function, calculated using the Taylor Series.", func=exp_e)
+constants.register(name="e", method_name="montecarlo", description="Generates e by using a suboptimal Monte Carlo approach.", func=montecarlo_e)
+constants.register(name="gamma", method_name="default", description="Generates gamma by integrating exp(-x)log(x) dx.", func=euler_gamma)
+print(f"Loaded constants: {constants.available()}")
+
+#functions.register(name="", method_name="", description="", func=)
+functions = FunctionRegistry()
+functions.register(name="fibonacci", method_name="default", description="Generates the nth fibonnaci number based off of the golden ratio.", func=fibonnaci)
+functions.register(name="factorial", method_name="default", description="Generates 1⋅2...⋅(x-1)⋅x.", func=factorial)
+functions.register(name="exp", method_name="default", description="Generates exponential of x using the Taylor series.", func=exp)
+functions.register(name="ln", method_name="default", description="Generates natural logarithm of x using Newton's method.", func=ln)
+functions.register(name="sin", method_name="default", description="Generates sine of x using the Taylor series.", func=sin)
+functions.register(name="cos", method_name="default", description="Generates sine of x using the Taylor series.", func=cos)
+functions.register(name="gamma", method_name="default", description="Generates gamma of x, the expansion of factorial using the general method.", func=gamma)
+print(f"Loaded functions: {functions.available()}")
+
 # plot(gamma, math.gamma, x=5, step=1)
-print(fun_e(10000000))
+# print(fun_e(10000000))
