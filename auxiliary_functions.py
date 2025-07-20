@@ -66,6 +66,14 @@ def chudnovsky_pi(n=5): # https://en.wikipedia.org/wiki/Chudnovsky_algorithm
         inverse_pi += numerator/denominator
     return (1/(inverse_pi))/12
 
+def leibniz_pi(n=10_000_000): #https://en.wikipedia.org/wiki/Leibniz_formula_for_%CF%80
+    total = 0
+    sign = 1
+    for i in range(1,n+1,2):
+        total += (1/i)*sign
+        sign*=-1
+    return total*4
+
 def tau(pi_function=chudnovsky_pi, n=5): #https://en.wikipedia.org/wiki/Tau_(mathematics)
     return 2*pi_function(n)
 
@@ -182,24 +190,16 @@ def gamma(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Gamma_function
         return (x-1)*gamma(x-1)
     return pi/(sin(pi*x)*gamma(1-x))
 
-"""
-    Constants
-        π       pi()         Pi
-        τ       tau()        Tau
-        e       e()          Euler's number
-        φ       phi()        Golden Ratio
-        y       euler()      Euler's constant
-"""
-
 #constants.register(name="", method_name="", description="", func=)
 constants = ConstantRegistry()
 constants.register(name="phi", method_name="default", description="Generates golden ratio.", func=phi)
 constants.register(name="pi", method_name="chudnovsky", description="Generates pi using the Chudnovsky algorithm based on Ramanujan's pi formulae.", func=chudnovsky_pi)
+constants.register(name="pi", method_name="leibniz", description="Generates pi using the Madhava-Leibniz series", func=leibniz_pi)
 constants.register(name="tau", method_name="default", description="Generates tau, the ratio of a circle's circumferance.", func=tau)
 constants.register(name="e", method_name="exp", description="Generates e by using the exponential function, calculated using the Taylor Series.", func=exp_e)
 constants.register(name="e", method_name="montecarlo", description="Generates e by using a suboptimal Monte Carlo approach.", func=montecarlo_e)
 constants.register(name="gamma", method_name="default", description="Generates gamma by integrating exp(-x)log(x) dx.", func=euler_gamma)
-print(f"Loaded constants: {constants.available()}")
+print(f"Loaded constants: {constants.available()}\n")
 
 #functions.register(name="", method_name="", description="", func=)
 functions = FunctionRegistry()
@@ -210,7 +210,9 @@ functions.register(name="ln", method_name="default", description="Generates natu
 functions.register(name="sin", method_name="default", description="Generates sine of x using the Taylor series.", func=sin)
 functions.register(name="cos", method_name="default", description="Generates sine of x using the Taylor series.", func=cos)
 functions.register(name="gamma", method_name="default", description="Generates gamma of x, the expansion of factorial using the general method.", func=gamma)
-print(f"Loaded functions: {functions.available()}")
+print(f"Loaded functions: {functions.available()}\n")
+
+print(constants.get(name="pi", method_name="chudnovsky", print_description=True)())
 
 # plot(gamma, math.gamma, x=5, step=1)
 # print(fun_e(10000000))
