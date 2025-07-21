@@ -11,6 +11,7 @@ def plot(func, true_func, step=2, domain=[-50,50], exclude=set()):
         for i in range(domain[0], domain[1]):
             abscissa.append(i*step)
             if i not in exclude:
+                print(i*step)
                 y1.append(func(i*step))
                 y2.append(true_func(i*step))
             else:
@@ -114,7 +115,7 @@ def factorial(x): # Factorial function using incremented multiplications
     assert isinstance(x,int) and x>=0
     if x<2:
         return 1
-    for i in range(2,x):
+    for i in range(2,x+1):
         x*=i
     return x
 
@@ -156,7 +157,7 @@ def cos(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Taylor_series#Tr
         sign *= -1
     return result
 
-def gamma(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Gamma_function
+def recursion_gamma(x, pi=chudnovsky_pi(), sin_func=sin): # https://en.wikipedia.org/wiki/Gamma_function
     # Recursion limit
     if abs(x-1) < 1e-8:
         return 1
@@ -171,8 +172,34 @@ def gamma(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Gamma_function
     
     # 2. Float
     if x > 1:
-        return (x-1)*gamma(x-1)
-    return pi/(sin(pi*x)*gamma(1-x))
+        return (x-1)*recursion_gamma(x-1)
+    return pi/(sin_func(pi*x)*recursion_gamma(1-x))
+
+def lanczos_gamma(x, pi=chudnovsky_pi(), sin_func=sin): # https://en.wikipedia.org/wiki/Lanczos_approximation
+    if x < 0.5:
+        return pi / (sin_func(pi * x) * lanczos_gamma(1 - x))
+    
+    g_coefficient = 7
+    p_precomputed = [
+        0.99999999999980993,
+        676.5203681218851,
+        -1259.1392167224028,
+        771.32342877765313,
+        -176.61502916214059,
+        12.507343278686905,
+        -0.13857109526572012,
+        9.9843695780195716e-6,
+        1.5056327351493116e-7
+    ]
+
+    x -= 1
+    p_precompute = p_precomputed[0]
+    for i in range(1, len(p_precomputed)):
+        p_precompute += p_precomputed[i] / (x + i)
+
+    t = x + g_coefficient + 0.5
+    return (1/2)**(2 * pi) * t**(x + 0.5)*exp(-t)*x
+
 
 #constants.register(name="", method_name="", description="", func=)
 constants = Registry()
@@ -193,7 +220,8 @@ functions.register(name="exp", method_name="default", description="Generates exp
 functions.register(name="ln", method_name="default", description="Generates natural logarithm of x using Newton's method.", func=ln)
 functions.register(name="sin", method_name="default", description="Generates sine of x using the Taylor series.", func=sin)
 functions.register(name="cos", method_name="default", description="Generates sine of x using the Taylor series.", func=cos)
-functions.register(name="gamma", method_name="default", description="Generates gamma of x, the expansion of factorial using the general method.", func=gamma)
+functions.register(name="gamma", method_name="recursive", description="Generates gamma of x at suboptimal pace, the expansion of factorial using the recursive method.", func=recursion_gamma)
+functions.register(name="gamma", method_name="lanczos", description="Generates an approximation of gamma of x featuring Lanczos' approximation method.", func=lanczos_gamma)
 print(f"Loaded functions: {functions.available()}\n")
 
 """
@@ -205,5 +233,5 @@ for name, methods in functions.registry.items():
     for method in methods:
         print(functions.get(name=name, method_name=method, print_description=True)(x=5))
 """
-
-plot(gamma, math.gamma, step=0.25, domain=[-50,50], exclude=set(-i for i in range(0,51)))
+#print(lanczos_gamma(0.25, sin_func=math.sin))
+#plot(gamma, math.gamma, step=0.25, domain=[-50,50], exclude=set(-i for i in range(0,51)))
