@@ -167,7 +167,7 @@ def gamma(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Gamma_function
     if isinstance(x, int) or int(x) == x:
         if x <= 0:
             return "undefined"
-        return factorial(x-1)
+        return factorial(int(x)-1)
     
     # 2. Float
     if x > 1:
