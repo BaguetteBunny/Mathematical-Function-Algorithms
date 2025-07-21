@@ -175,7 +175,7 @@ def recursion_gamma(x, pi=chudnovsky_pi(), sin_func=sin): # https://en.wikipedia
         return (x-1)*recursion_gamma(x-1)
     return pi/(sin_func(pi*x)*recursion_gamma(1-x))
 
-def lanczos_gamma(x, pi=chudnovsky_pi(), sin_func=sin): # https://en.wikipedia.org/wiki/Lanczos_approximation
+def lanczos_gamma(x, pi=math.pi, sin_func=math.sin, exp_func=math.exp): # https://en.wikipedia.org/wiki/Lanczos_approximation
     if x < 0.5:
         return pi / (sin_func(pi * x) * lanczos_gamma(1 - x))
     
@@ -193,13 +193,12 @@ def lanczos_gamma(x, pi=chudnovsky_pi(), sin_func=sin): # https://en.wikipedia.o
     ]
 
     x -= 1
-    p_precompute = p_precomputed[0]
+    a = p_precomputed[0]
     for i in range(1, len(p_precomputed)):
-        p_precompute += p_precomputed[i] / (x + i)
+        a += p_precomputed[i] / (x + i)
 
     t = x + g_coefficient + 0.5
-    return (1/2)**(2 * pi) * t**(x + 0.5)*exp(-t)*x
-
+    return (2 * pi)**(1/2) * t**(x + 0.5)*exp_func(-t)*a
 
 #constants.register(name="", method_name="", description="", func=)
 constants = Registry()
@@ -233,5 +232,5 @@ for name, methods in functions.registry.items():
     for method in methods:
         print(functions.get(name=name, method_name=method, print_description=True)(x=5))
 """
-#print(lanczos_gamma(0.25, sin_func=math.sin))
-#plot(gamma, math.gamma, step=0.25, domain=[-50,50], exclude=set(-i for i in range(0,51)))
+
+plot(lanczos_gamma, math.gamma, step=0.25, domain=[-50,50], exclude=set(-i for i in range(0,51)))
