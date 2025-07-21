@@ -2,19 +2,26 @@ import matplotlib.pyplot as plt
 import math
 import random
 
-def plot(func, true_func, x=None, step=2, domain=[-50,50]):
+def plot(func, true_func, step=2, domain=[-50,50], exclude=set()):
     abscissa = []
     y1 = []
     y2 = []
 
+    print(exclude)
+
     abscissa = [x * step for x in range(domain[0], domain[1])]
     if callable(true_func):
-        y1 = [func(i*step) for i in range(domain[0], domain[1])]
-        y2 = [true_func(i*step) for i in range(domain[0], domain[1])]
+        for i in range(domain[0], domain[1]):
+            if i not in exclude:
+                y1.append(func(i*step))
+                y2.append(true_func(i*step))
+            else:
+                y1.append(math.inf)
+                y2.append(math.inf)
     else:
-        y1 = [func() for _ in range(domain[0], domain[1])]
-        y2 = [true_func for _ in range(domain[0], domain[1])]
-
+        for _ in range(domain[0], domain[1]):
+            y1.append(func())
+            y2.append(true_func())
 
     plt.plot(abscissa, y1, label=func.__name__, color="red", linestyle='-')
     plt.plot(abscissa, y2, label="True Function", color="blue", linestyle='-')
@@ -24,7 +31,7 @@ def plot(func, true_func, x=None, step=2, domain=[-50,50]):
     plt.legend()
     plt.show()
 
-class ConstantRegistry:
+class Registry:
     """
     Constants
         π   Pi
@@ -32,6 +39,14 @@ class ConstantRegistry:
         e   Euler's number
         φ   Golden Ratio
         y   Euler's constant
+
+    Functions
+        Ƒ(n)        Fibonnaci Sequence
+        n!          Factorial Function
+        eⁿ          Exponential Function
+        ln(n)       Natural Logarithm Function
+        sin(n)      Sine Function
+        Γ(n)        Gamma Function
     """
     def __init__(self):
         self.registry = {}
@@ -80,7 +95,7 @@ def tau(pi_function=chudnovsky_pi, n=5): #https://en.wikipedia.org/wiki/Tau_(mat
 def exp_e(n=100): # https://en.wikipedia.org/wiki/E_(mathematical_constant)
     return exp(1, n)
 
-def montecarlo_e(n=100): # https://en.wikipedia.org/wiki/Monte_Carlo_integration
+def montecarlo_e(n=10_000_000): # https://en.wikipedia.org/wiki/Monte_Carlo_integration
     values = 0
     for _ in range(n):
         x=0
@@ -92,39 +107,8 @@ def montecarlo_e(n=100): # https://en.wikipedia.org/wiki/Monte_Carlo_integration
 def euler_gamma(n=100_000): # https://en.wikipedia.org/wiki/Euler%27s_constant#Integrals
     return sum(1/k - ln(1 + 1/k) for k in range(1, n+1))
 
-
-class FunctionRegistry:
-    """
-    Functions
-        Ƒ(n)        Fibonnaci Sequence
-        n!          Factorial Function
-        eⁿ          Exponential Function
-        ln(n)       Natural Logarithm Function
-        sin(n)      Sine Function
-        Γ(n)        Gamma Function
-    """
-    def __init__(self):
-        self.registry = {}
-
-    def register(self, name, method_name, description, func):
-        if name not in self.registry:
-            self.registry[name] = {}
-        self.registry[name][method_name] = {
-            "func": func,
-            "desc": description
-        }
-
-    def get(self, name, method_name="default"):
-        return self.registry[name][method_name]["func"]
-    
-    def available(self):
-        return {
-            const: list(methods.keys())
-            for const, methods in self.registry.items()
-        }
-
-def fibonnaci(n, phi=phi()): #https://en.wikipedia.org/wiki/Fibonacci_sequence#Relation_to_the_golden_ratio
-    return int((phi**n - (-phi)**(-n))/(2*phi-1))
+def fibonnaci(x, phi=phi()): #https://en.wikipedia.org/wiki/Fibonacci_sequence#Relation_to_the_golden_ratio
+    return int((phi**x - (-phi)**(-x))/(2*phi-1))
 
 def factorial(x): # Factorial function using incremented multiplications
     assert isinstance(x,int) and x>=0
@@ -191,7 +175,7 @@ def gamma(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Gamma_function
     return pi/(sin(pi*x)*gamma(1-x))
 
 #constants.register(name="", method_name="", description="", func=)
-constants = ConstantRegistry()
+constants = Registry()
 constants.register(name="phi", method_name="default", description="Generates golden ratio.", func=phi)
 constants.register(name="pi", method_name="chudnovsky", description="Generates pi using the Chudnovsky algorithm based on Ramanujan's pi formulae.", func=chudnovsky_pi)
 constants.register(name="pi", method_name="leibniz", description="Generates pi using the Madhava-Leibniz series", func=leibniz_pi)
@@ -202,8 +186,8 @@ constants.register(name="gamma", method_name="default", description="Generates g
 print(f"Loaded constants: {constants.available()}\n")
 
 #functions.register(name="", method_name="", description="", func=)
-functions = FunctionRegistry()
-functions.register(name="fibonacci", method_name="default", description="Generates the nth fibonnaci number based off of the golden ratio.", func=fibonnaci)
+functions = Registry()
+functions.register(name="fibonnaci", method_name="default", description="Generates the nth fibonnaci number based off of the golden ratio.", func=fibonnaci)
 functions.register(name="factorial", method_name="default", description="Generates 1⋅2...⋅(x-1)⋅x.", func=factorial)
 functions.register(name="exp", method_name="default", description="Generates exponential of x using the Taylor series.", func=exp)
 functions.register(name="ln", method_name="default", description="Generates natural logarithm of x using Newton's method.", func=ln)
@@ -212,7 +196,14 @@ functions.register(name="cos", method_name="default", description="Generates sin
 functions.register(name="gamma", method_name="default", description="Generates gamma of x, the expansion of factorial using the general method.", func=gamma)
 print(f"Loaded functions: {functions.available()}\n")
 
-print(constants.get(name="pi", method_name="chudnovsky", print_description=True)())
+"""
+for name, methods in constants.registry.items():
+    for method in methods:
+        print(constants.get(name=name, method_name=method, print_description=True)())
 
-# plot(gamma, math.gamma, x=5, step=1)
-# print(fun_e(10000000))
+for name, methods in functions.registry.items():
+    for method in methods:
+        print(functions.get(name=name, method_name=method, print_description=True)(x=5))
+"""
+
+plot(gamma, math.gamma, step=0.25, domain=[-50,50], exclude=set(-i for i in range(0,51)))
