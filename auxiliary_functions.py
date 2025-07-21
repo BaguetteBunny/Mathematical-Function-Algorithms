@@ -7,11 +7,9 @@ def plot(func, true_func, step=2, domain=[-50,50], exclude=set()):
     y1 = []
     y2 = []
 
-    print(exclude)
-
-    abscissa = [x * step for x in range(domain[0], domain[1])]
     if callable(true_func):
         for i in range(domain[0], domain[1]):
+            abscissa.append(i*step)
             if i not in exclude:
                 y1.append(func(i*step))
                 y2.append(true_func(i*step))
@@ -19,9 +17,11 @@ def plot(func, true_func, step=2, domain=[-50,50], exclude=set()):
                 y1.append(math.inf)
                 y2.append(math.inf)
     else:
-        for _ in range(domain[0], domain[1]):
+        for i in range(domain[0], domain[1]):
+            abscissa.append(i*step)
             y1.append(func())
             y2.append(true_func())
+
 
     plt.plot(abscissa, y1, label=func.__name__, color="red", linestyle='-')
     plt.plot(abscissa, y2, label="True Function", color="blue", linestyle='-')
