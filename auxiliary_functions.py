@@ -2,24 +2,28 @@ import matplotlib.pyplot as plt
 import math
 import random
 
-def plot(func, true_func, step=2, domain=[-50,50], exclude=set()):
+def plot(func, true_func, step=2, true_domain=[-5,5], exclude=set()):
     abscissa = []
     y1 = []
     y2 = []
+    
+    domain = [int(true_domain[0]/step), int(true_domain[1]/step)]
 
     if callable(true_func):
         for i in range(domain[0], domain[1]):
-            abscissa.append(i*step)
-            if i not in exclude:
-                print(i*step)
-                y1.append(func(i*step))
-                y2.append(true_func(i*step))
+            total_step = i*step
+            abscissa.append(total_step)
+            if total_step not in exclude:
+                print(total_step)
+                y1.append(func(total_step))
+                y2.append(true_func(total_step))
             else:
                 y1.append(math.inf)
                 y2.append(math.inf)
     else:
         for i in range(domain[0], domain[1]):
-            abscissa.append(i*step)
+            total_step = i*step
+            abscissa.append(total_step)
             y1.append(func())
             y2.append(true_func())
 
@@ -233,4 +237,4 @@ for name, methods in functions.registry.items():
         print(functions.get(name=name, method_name=method, print_description=True)(x=5))
 """
 
-plot(lanczos_gamma, math.gamma, step=0.25, domain=[-50,50], exclude=set(-i for i in range(0,51)))
+plot(lanczos_gamma, math.gamma, step=0.01, true_domain=[-5,5], exclude=set(-i for i in range(0,51)))
