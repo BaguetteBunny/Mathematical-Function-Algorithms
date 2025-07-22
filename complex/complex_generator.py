@@ -22,12 +22,18 @@ class complex():
         '''
         return self.imaginary
     
-    def isGaussian(self):
+    def conj(self):
+        '''
+        Returns complex conjugate of complex number
+        '''
+        return complex(real = self.Re(), imaginary = (-1)*self.Im())
+
+    def isGaussian(self): # https://en.wikipedia.org/wiki/Gaussian_integer
         '''
         Returns True if the complex number is a Gaussian Integer
         '''
         return (float(self.Re()).is_integer() and float(self.Im()).is_integer())
-    
+
     def __abs__(self):
         '''
         Returns the modulus of the complex number
