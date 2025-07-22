@@ -1,20 +1,4 @@
 class Registry:
-    """
-    Constants
-        π   Pi
-        τ   Tau
-        e   Euler's number
-        φ   Golden Ratio
-        y   Euler's constant
-
-    Functions
-        Ƒ(n)        Fibonnaci Sequence
-        n!          Factorial Function
-        eⁿ          Exponential Function
-        ln(n)       Natural Logarithm Function
-        sin(n)      Sine Function
-        Γ(n)        Gamma Function
-    """
     def __init__(self):
         self.registry = {}
 
