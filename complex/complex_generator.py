@@ -17,3 +17,9 @@ class complex():
         Returns the Imaginary part of the complex number
         '''
         return self.imaginary
+    
+    def modulus(self):
+        '''
+        Returns the modulus of the complex number
+        '''
+        return (self.Re()**2 + self.Im()**2) ** 0.5
