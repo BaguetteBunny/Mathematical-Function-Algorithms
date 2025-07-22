@@ -109,7 +109,7 @@ def montecarlo_e(n: int = 10_000_000): # https://en.wikipedia.org/wiki/Monte_Car
             values += 1
     return values/n
 
-def euler_gamma(n: int = 100_000): # https://en.wikipedia.org/wiki/Euler%27s_constant#Integrals
+def mascheroni_gamma(n: int = 100_000): # https://en.wikipedia.org/wiki/Euler%27s_constant#Integrals
     return sum(1/k - ln(1 + 1/k) for k in range(1, n+1))
 
 def fibonnaci(x: int, phi=phi()): #https://en.wikipedia.org/wiki/Fibonacci_sequence#Relation_to_the_golden_ratio
@@ -131,7 +131,7 @@ def exp(x, n: int = 100): # https://en.wikipedia.org/wiki/Taylor_series
 
 def ln(x, epsilon: float = 1e-10): # https://en.wikipedia.org/wiki/Newton%27s_method
     y = 1
-    while abs(exp(y,20) - x) > n:
+    while abs(exp(y,20) - x) > epsilon:
         y = y-1 + x/exp(y,20)
     return y
 
@@ -252,7 +252,7 @@ constants.register(name="pi", method_name="leibniz", description="Generates pi u
 constants.register(name="tau", method_name="default", description="Generates tau, the ratio of a circle's circumferance.", func=tau)
 constants.register(name="e", method_name="exp", description="Generates e by using the exponential function, calculated using the Taylor Series.", func=exp_e)
 constants.register(name="e", method_name="montecarlo", description="Generates e by using a suboptimal Monte Carlo approach.", func=montecarlo_e)
-constants.register(name="gamma", method_name="default", description="Generates gamma by integrating exp(-x)log(x) dx.", func=euler_gamma)
+constants.register(name="mascheroni", method_name="default", description="Generates Euler-Mascheroni by integrating exp(-x)log(x) dx.", func=mascheroni_gamma)
 print(f"Loaded constants: {constants.available()}\n")
 
 #functions.register(name="", method_name="", description="", func=)
