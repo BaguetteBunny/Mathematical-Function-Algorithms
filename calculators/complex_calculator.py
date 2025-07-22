@@ -46,12 +46,12 @@ class Complex_Calculator():
     
     def e(self, z: complex):
         re_exp = exp(z.Re())
-        im_exp = exp(z.Im())
+        im_exp = z.Im()
 
         # Converts e^ix to cis(x)
         cisx = complex(real = cos(im_exp), imaginary = sin(im_exp))
 
-        return self.product(cisx, re_exp)
+        return self.product(cisx, complex(real = re_exp, imaginary = 0))
 
     
 calc = Complex_Calculator()
