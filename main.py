@@ -113,7 +113,7 @@ def montecarlo_e(n: int = 10_000_000): # https://en.wikipedia.org/wiki/Monte_Car
             values += 1
     return values/n
 
-def mascheroni_gamma(n: int = 100_000): # https://en.wikipedia.org/wiki/Euler%27s_constant#Integrals
+def mascheroni_gamma(n: int = 10_000): # https://en.wikipedia.org/wiki/Euler%27s_constant#Integrals
     return sum(1/k - ln(1 + 1/k) for k in range(1, n+1))
 
 def fibonnaci(x: int, phi=phi()): #https://en.wikipedia.org/wiki/Fibonacci_sequence#Relation_to_the_golden_ratio
@@ -148,7 +148,7 @@ def sin(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Taylor_series#Tr
     
     result = 0
     sign = 1
-    for n in range(0, 7):
+    for n in range(0, 50):
         term = (x**(2*n+1)) / factorial(2*n+1)
         result += sign * term
         sign *= -1
@@ -161,11 +161,14 @@ def cos(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Taylor_series#Tr
     
     result = 0
     sign = 1
-    for n in range(0, 7):
+    for n in range(0, 50):
         term = (x**(2*n)) / factorial(2*n)
         result += sign * term
         sign *= -1
     return result
+
+def tan(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Trigonometry#Trigonometric_ratios
+    return sin(x,pi)/cos(x,pi)
 
 def recursion_gamma(x, pi=chudnovsky_pi(), sin_func=sin): # https://en.wikipedia.org/wiki/Gamma_function
     # Recursion limit
@@ -269,10 +272,11 @@ functions.register(name="exp", method_name="default", description="Generates exp
 functions.register(name="ln", method_name="default", description="Generates natural logarithm of x using Newton's method.", func=ln)
 functions.register(name="sin", method_name="default", description="Generates sine of x using the Taylor series.", func=sin)
 functions.register(name="cos", method_name="default", description="Generates sine of x using the Taylor series.", func=cos)
+functions.register(name="tan", method_name="default", description="Generates tangent of x using basic Trigonometric Ratios", func=tan)
 functions.register(name="gamma", method_name="recursive", description="Generates gamma of x at suboptimal pace, the expansion of factorial using the recursive method.", func=recursion_gamma)
 functions.register(name="gamma", method_name="lanczos", description="Generates an approximation of gamma of x featuring Lanczos' approximation method.", func=lanczos_gamma)
 print(f"Loaded functions: {functions.available()}\n")
-
+"""
 for name, methods in constants.registry.items():
     for method in methods:
         print(constants.get(name=name, method_name=method, print_description=True)())
@@ -284,6 +288,6 @@ for name, methods in functions.registry.items():
 plot(lanczos_gamma, math.gamma, step=0.001, exclude=set(-i for i in range(0,51)))
 plot(sin, math.sin, step=0.001)
 plot(exp, math.exp, step=0.001)
-
+"""
 
 

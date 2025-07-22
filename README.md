@@ -43,6 +43,7 @@ Trigonometric functions and core constants related to π.
 | `tau` | `default`   | Returns `τ (2π)`                                                           |
 | `sin` | `default`   | Approximates `sin(x)` using Taylor series expansion.                       |
 | `cos` | `default`   | Approximates `cos(x)` using Taylor series expansion.                       |
+| `tan` | `default`   | Approximates `tan(x)` using trigonometric ratios.                          |
 
 
 📷 _Graph_:  
