@@ -22,6 +22,12 @@ class complex():
         '''
         return self.imaginary
     
+    def isGaussian(self):
+        '''
+        Returns True if the complex number is a Gaussian Integer
+        '''
+        return (float(self.Re()).is_integer() and float(self.Im()).is_integer())
+    
     def __abs__(self):
         '''
         Returns the modulus of the complex number
@@ -52,7 +58,8 @@ class complex():
         im_prod = self.Re()*z.Im() + self.Im()*z.Re()
         return complex(real = re_prod, imaginary= im_prod)
     
-    def __matmul__(self): ...
+    def __matmul__(self, z: 'complex'):
+        raise NotImplementedError
 
     def __truediv__(self, z: 'complex'):
         '''
@@ -65,7 +72,16 @@ class complex():
         im_quot = (self.Im()*z.Re() - self.Re()*z.Im()) / (z.Re()**2 + z.Im()**2)
         return complex(real = re_quot, imaginary= im_quot)
     
-    def __floordiv__(self): ...
+    def __floordiv__(self, z: 'complex'):
+        '''
+        Returns the floored quotient of two complex numbers
+        '''
+        divided_z = self.__truediv__(z)
+
+        re = divided_z.Re()
+        im = divided_z.Im()
+
+        return complex(real = int(re), imaginary = int(im))
 
     def __mod__(self): ...
 
@@ -105,11 +121,3 @@ class complex():
 
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
-
-print(a+b)
-print(a-b)
-print(a*b)
-print(a/b)
-print(abs(b))
-print(b.e())
-print(b.sin())
