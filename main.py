@@ -2,12 +2,12 @@ import matplotlib.pyplot as plt
 import math
 import random
 
-def plot(func, true_func, step: int = 2, true_domain: list[int,int] = [-5,5], exclude: set = set(), grid: bool = True):
+def plot(func, true_func, step: int = 2, true_x_domain: tuple[int,int] = (-10,10), true_y_domain: tuple[int,int] = (-5,5), exclude: set = set(), grid: bool = True):
     abscissa = []
     y1 = []
     y2 = []
-    
-    domain = [int(true_domain[0]/step), int(true_domain[1]/step)]
+
+    domain = [int(true_x_domain[0]/step), int(true_x_domain[1]/step)]
 
     if callable(true_func):
         for i in range(domain[0], domain[1]):
@@ -28,12 +28,15 @@ def plot(func, true_func, step: int = 2, true_domain: list[int,int] = [-5,5], ex
 
     if grid:
         plt.grid()
-    
-    plt.plot(abscissa, y1, label=func.__name__, color="red", linestyle='-')
-    plt.plot(abscissa, y2, label="True Function", color="blue", linestyle='-')
-    plt.title(f"Accuracy Chart for {func.__name__}")
+        plt.axhline(linewidth=1, color='black')
+        plt.axvline(linewidth=1, color='black')
+
+    plt.plot(abscissa, y2, label="True Function", color="red", linestyle='-')
+    plt.plot(abscissa, y1, label=func.__name__, color="blue", linestyle='-')
+    plt.title(f"Accuracy Chart for '{func.__name__}'")
     plt.xlabel("x")
     plt.ylabel("y")
+    plt.ylim(true_y_domain[0], true_y_domain[1])
     plt.legend()
     plt.show()
 
@@ -120,7 +123,7 @@ def factorial(x: int): # Factorial function using incremented multiplications
     assert x>=0
     if x<2:
         return 1
-    for i in range(2,x+1):
+    for i in range(2,x):
         x*=i
     return x
 
@@ -130,7 +133,7 @@ def exp(x, n: int = 100): # https://en.wikipedia.org/wiki/Taylor_series
         final+=(x**k)/factorial(k)
     return final
 
-def ln(x, epsilon: float = 1e-10): # https://en.wikipedia.org/wiki/Newton%27s_method
+def ln(x, epsilon: float = 1e-8): # https://en.wikipedia.org/wiki/Newton%27s_method
     y = 1
     while abs(exp(y,20) - x) > epsilon:
         y = y-1 + x/exp(y,20)
@@ -180,7 +183,7 @@ def recursion_gamma(x, pi=chudnovsky_pi(), sin_func=sin): # https://en.wikipedia
         return (x-1)*recursion_gamma(x-1)
     return pi/(sin_func(pi*x)*recursion_gamma(1-x))
 
-def lanczos_gamma(x, n_coef: int = 9, pi: float = math.pi, sin_func=math.sin, exp_func=math.exp): # https://en.wikipedia.org/wiki/Lanczos_approximation
+def lanczos_gamma(x, n_coef: int = 9, pi: float = chudnovsky_pi(), sin_func=sin, exp_func=exp): # https://en.wikipedia.org/wiki/Lanczos_approximation
     match n_coef:
         case 5:
             g_coefficient = 5
@@ -276,4 +279,9 @@ for name, methods in functions.registry.items():
     for method in methods:
         print(functions.get(name=name, method_name=method, print_description=True)(x=5))
 
-plot(lanczos_gamma, math.gamma, step=0.001, true_domain=[-3,3], exclude=set(-i for i in range(0,51)))
+plot(lanczos_gamma, math.gamma, step=0.001, exclude=set(-i for i in range(0,51)))
+plot(sin, math.sin, step=0.001, exclude=set(-i for i in range(0,51)))
+plot(exp, math.exp, step=0.001, exclude=set(-i for i in range(0,51)))
+
+
+
