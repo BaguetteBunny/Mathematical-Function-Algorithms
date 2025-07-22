@@ -1,5 +1,7 @@
 from complex.complex_generator import complex # Overwrite complex module
 
+from functions.functions import *
+
 class Complex_Calculator():
     def __init__(self):
         pass
@@ -39,6 +41,16 @@ class Complex_Calculator():
         im_quot = (a.Im()*b.Re() - a.Re()*b.Im()) / (b.Re()**2 + b.Im()**2)
         return complex(real = re_quot, imaginary= im_quot)
     
+    def e(self, z: complex):
+        re_exp = exp(z.Re())
+        im_exp = exp(z.Im())
+
+        # Converts e^ix to cis(x)
+        cisx = complex(real = cos(im_exp), imaginary = sin(im_exp))
+
+        return self.product(cisx, re_exp)
+
+    
 calc = Complex_Calculator()
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
@@ -47,3 +59,4 @@ print(calc.sum(a,b))
 print(calc.difference(a,b))
 print(calc.product(a,b))
 print(calc.quotient(a,b))
+print(calc.e(a))
