@@ -26,14 +26,15 @@ Functions related to factorials and extensions like the Gamma function.
 | `gamma`     | `lanczos`   | Efficiently approximates `Γ(x)` using Lanczos approximation.         |
 | `mascheroni`| `default`   | Computes Euler's constant `γ` by integrating `exp(-x) * log(x) dx`.  |
 
-📷 _Graphs_:  
-- ![Gamma Lanczos](graphs/gamma_lanczos_function.png)
+
+📷 _Graph_:  
+- ![Gamma Lanczos](graphs/lanczos_gamma_function.png)
 
 ---
 
 ## 2. 🔺 Trigonometry & Circle Constants
 
-Trigonometric functions and core constants related to π and τ.
+Trigonometric functions and core constants related to π.
 
 | Name  | Method      | Description                                                                |
 |-------|-------------|----------------------------------------------------------------------------|
@@ -43,7 +44,8 @@ Trigonometric functions and core constants related to π and τ.
 | `sin` | `default`   | Approximates `sin(x)` using Taylor series expansion.                       |
 | `cos` | `default`   | Approximates `cos(x)` using Taylor series expansion.                       |
 
-📷 _Graphs_:  
+
+📷 _Graph_:  
 - ![sin(x)](graphs/sine_function.png)
 
 ---
@@ -59,7 +61,8 @@ Functions related to the exponential base `e`, its approximations, and logarithm
 | `exp` | `default`   | Approximates `exp(x)` using Taylor series.                                 |  
 | `ln`  | `default`   | Approximates the natural logarithm `ln(x)` using Newton's method.          |
 
-📷 _Graphs_:  
+
+📷 _Graph_:  
 - ![exp(x)](graphs/exp_function.png)
 
 ---
@@ -93,6 +96,6 @@ You can call a function using:
 functions.get(name="NAME", method_name="METHOD NAME")("ARGUMENTS")
 ```
 
-## License
+## ⚖️ License
 
 - [MIT](license)
