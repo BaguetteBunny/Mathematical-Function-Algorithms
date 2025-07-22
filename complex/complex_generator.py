@@ -25,5 +25,9 @@ class complex():
         return (self.Re()**2 + self.Im()**2) ** 0.5
     
     def __str__(self):
-        operator = "+" if self.imaginary >= 0 else "-"
-        return f"{self.real} {operator} {self.imaginary}i" 
+        if self.imaginary >=0 :
+            new_imaginary = f" + {self.imaginary}i"
+        else:
+            new_imaginary = f" - {str(self.imaginary)[1:]}i"
+        
+        return f"{self.real}{new_imaginary}" 
