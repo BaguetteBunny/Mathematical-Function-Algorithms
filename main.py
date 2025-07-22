@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import math
 import random
 
-def plot(func, true_func, step: int = 2, true_domain: list[int,int] = [-5,5], exclude: set = set()):
+def plot(func, true_func, step: int = 2, true_domain: list[int,int] = [-5,5], exclude: set = set(), grid: bool = True):
     abscissa = []
     y1 = []
     y2 = []
@@ -14,7 +14,6 @@ def plot(func, true_func, step: int = 2, true_domain: list[int,int] = [-5,5], ex
             total_step = i*step
             abscissa.append(total_step)
             if total_step not in exclude:
-                print(total_step)
                 y1.append(func(total_step))
                 y2.append(true_func(total_step))
             else:
@@ -27,7 +26,9 @@ def plot(func, true_func, step: int = 2, true_domain: list[int,int] = [-5,5], ex
             y1.append(func())
             y2.append(true_func())
 
-
+    if grid:
+        plt.grid()
+    
     plt.plot(abscissa, y1, label=func.__name__, color="red", linestyle='-')
     plt.plot(abscissa, y2, label="True Function", color="blue", linestyle='-')
     plt.title(f"Accuracy Chart for {func.__name__}")
@@ -267,7 +268,6 @@ functions.register(name="gamma", method_name="recursive", description="Generates
 functions.register(name="gamma", method_name="lanczos", description="Generates an approximation of gamma of x featuring Lanczos' approximation method.", func=lanczos_gamma)
 print(f"Loaded functions: {functions.available()}\n")
 
-
 for name, methods in constants.registry.items():
     for method in methods:
         print(constants.get(name=name, method_name=method, print_description=True)())
@@ -276,5 +276,4 @@ for name, methods in functions.registry.items():
     for method in methods:
         print(functions.get(name=name, method_name=method, print_description=True)(x=5))
 
-
-plot(lanczos_gamma, math.gamma, step=0.01, true_domain=[-5,5], exclude=set(-i for i in range(0,51)))
+plot(lanczos_gamma, math.gamma, step=0.001, true_domain=[-3,3], exclude=set(-i for i in range(0,51)))
