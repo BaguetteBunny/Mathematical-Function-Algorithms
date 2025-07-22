@@ -179,22 +179,62 @@ def recursion_gamma(x, pi=chudnovsky_pi(), sin_func=sin): # https://en.wikipedia
         return (x-1)*recursion_gamma(x-1)
     return pi/(sin_func(pi*x)*recursion_gamma(1-x))
 
-def lanczos_gamma(x, pi=math.pi, sin_func=math.sin, exp_func=math.exp): # https://en.wikipedia.org/wiki/Lanczos_approximation
+def lanczos_gamma(x, n_coef=9, pi=math.pi, sin_func=math.sin, exp_func=math.exp): # https://en.wikipedia.org/wiki/Lanczos_approximation
+    match n_coef:
+        case 5:
+            g_coefficient = 5
+            p_precomputed = [
+                1.0000018972739440364,
+                76.180082222642137322,
+                -86.505092037054859197,
+                24.012898581922685900,
+                -1.2296028490285820771
+            ]
+        case 7:
+            g_coefficient = 5
+            p_precomputed = [
+                1.0000000001900148240,
+                76.180091729471463483,
+                -86.505320329416767652,
+                24.014098240830910490,
+                -1.2317395724501553875,
+                0.0012086509738661785061,
+                -5.3952393849531283785e-6
+            ]
+        case 9:
+            g_coefficient = 7
+            p_precomputed = [
+                0.99999999999980993,
+                676.5203681218851,
+                -1259.1392167224028,
+                771.32342877765313,
+                -176.61502916214059,
+                12.507343278686905,
+                -0.13857109526572012,
+                9.9843695780195716e-6,
+                1.5056327351493116e-7
+            ]
+        case 12:
+            g_coefficient = 8
+            p_precomputed = [
+                0.9999999999999999298,
+                1975.3739023578852322,
+                -4397.3823927922428918,
+                3462.6328459862717019,
+                -1156.9851431631167820,
+                154.53815050252775060,
+                -6.2536716123689161798,
+                0.034642762454736807441,
+                -7.4776171974442977377e-7,
+                6.3041253821852264261e-8,
+                -2.7405717035683877489e-8,
+                4.0486948817567609101e-9
+            ]
+        case _: 
+            return ValueError
+    
     if x < 0.5:
         return pi / (sin_func(pi * x) * lanczos_gamma(1 - x))
-    
-    g_coefficient = 7
-    p_precomputed = [
-        0.99999999999980993,
-        676.5203681218851,
-        -1259.1392167224028,
-        771.32342877765313,
-        -176.61502916214059,
-        12.507343278686905,
-        -0.13857109526572012,
-        9.9843695780195716e-6,
-        1.5056327351493116e-7
-    ]
 
     x -= 1
     a = p_precomputed[0]
@@ -227,7 +267,7 @@ functions.register(name="gamma", method_name="recursive", description="Generates
 functions.register(name="gamma", method_name="lanczos", description="Generates an approximation of gamma of x featuring Lanczos' approximation method.", func=lanczos_gamma)
 print(f"Loaded functions: {functions.available()}\n")
 
-"""
+
 for name, methods in constants.registry.items():
     for method in methods:
         print(constants.get(name=name, method_name=method, print_description=True)())
@@ -235,6 +275,6 @@ for name, methods in constants.registry.items():
 for name, methods in functions.registry.items():
     for method in methods:
         print(functions.get(name=name, method_name=method, print_description=True)(x=5))
-"""
+
 
 plot(lanczos_gamma, math.gamma, step=0.01, true_domain=[-5,5], exclude=set(-i for i in range(0,51)))
