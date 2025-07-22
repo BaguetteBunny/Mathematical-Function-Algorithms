@@ -117,6 +117,7 @@ def mascheroni_gamma(n: int = 100_000): # https://en.wikipedia.org/wiki/Euler%27
     return sum(1/k - ln(1 + 1/k) for k in range(1, n+1))
 
 def fibonnaci(x: int, phi=phi()): #https://en.wikipedia.org/wiki/Fibonacci_sequence#Relation_to_the_golden_ratio
+    assert x>=0
     return int((phi**x - (-phi)**(-x))/(2*phi-1))
 
 def factorial(x: int): # Factorial function using incremented multiplications
@@ -134,6 +135,7 @@ def exp(x, n: int = 100): # https://en.wikipedia.org/wiki/Taylor_series
     return final
 
 def ln(x, epsilon: float = 1e-8): # https://en.wikipedia.org/wiki/Newton%27s_method
+    assert x>0
     y = 1
     while abs(exp(y,20) - x) > epsilon:
         y = y-1 + x/exp(y,20)
@@ -280,8 +282,8 @@ for name, methods in functions.registry.items():
         print(functions.get(name=name, method_name=method, print_description=True)(x=5))
 
 plot(lanczos_gamma, math.gamma, step=0.001, exclude=set(-i for i in range(0,51)))
-plot(sin, math.sin, step=0.001, exclude=set(-i for i in range(0,51)))
-plot(exp, math.exp, step=0.001, exclude=set(-i for i in range(0,51)))
+plot(sin, math.sin, step=0.001)
+plot(exp, math.exp, step=0.001)
 
 
 
