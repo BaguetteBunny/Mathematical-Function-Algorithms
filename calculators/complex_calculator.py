@@ -45,6 +45,9 @@ class Complex_Calculator():
         return complex(real = re_quot, imaginary= im_quot)
     
     def e(self, z: complex):
+        '''
+        Returns the e^z
+        '''
         re_exp = exp(z.Re())
         im_exp = z.Im()
 
