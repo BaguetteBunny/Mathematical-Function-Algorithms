@@ -1,8 +1,8 @@
 import math # Optional, used to graph and compare.
 
-from registry import Registry
-from plot import graph
-from functions import *
+from script.registry import Registry
+from script.plot import graph
+from script.functions import *
     
 #constants.register(name="", method_name="", description="", func=)
 constants = Registry()
