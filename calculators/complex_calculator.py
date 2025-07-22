@@ -1,3 +1,6 @@
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from complex.complex_generator import complex # Overwrite complex module
 
 from functions.functions import *
