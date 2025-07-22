@@ -48,14 +48,24 @@ class Complex_Calculator():
         '''
         Returns the e^z
         '''
-        re_exp = exp(z.Re())
-        im_exp = z.Im()
+        re = z.Re()
+        im = z.Im()
 
         # Converts e^ix to cis(x)
-        cisx = complex(real = cos(im_exp), imaginary = sin(im_exp))
+        cisx = complex(real = cos(im), imaginary = sin(im))
 
-        return self.product(cisx, complex(real = re_exp, imaginary = 0))
+        return self.product(cisx, complex(real = exp(re), imaginary = 0))
+    
+    def sin(self, z: complex):
+        re = z.Re()
+        im = z.Im()
+        
+        print(im)
 
+        real_part = complex(sin(re)*cosh(im), 0)
+        imaginary_part = complex(0, cos(re)*sinh(im))
+
+        return self.sum(real_part, imaginary_part)
     
 calc = Complex_Calculator()
 a = complex(real = 4, imaginary = 3)
@@ -65,4 +75,5 @@ print(calc.sum(a,b))
 print(calc.difference(a,b))
 print(calc.product(a,b))
 print(calc.quotient(a,b))
-print(calc.e(a))
+print(calc.e(b))
+print(calc.sin(b))
