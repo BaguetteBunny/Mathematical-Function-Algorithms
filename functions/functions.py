@@ -91,8 +91,44 @@ def cos(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Taylor_series#Tr
 def tan(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Trigonometry#Trigonometric_ratios
     cosine = cos(x,pi)
     if cosine == 0:
-        raise ZeroDivisionError("Undefined for x = π/2 or x = -π/2")
+        raise ZeroDivisionError("Undefined for odd multiples of π/2")
     return sin(x,pi)/cosine
+
+def sec(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Trigonometry#Trigonometric_ratios
+    cosine = cos(x,pi)
+    if cosine == 0:
+        raise ZeroDivisionError("Undefined for odd multiples of π/2")
+    return 1/cosine
+
+def csc(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Trigonometry#Trigonometric_ratios
+    sine = sin(x,pi)
+    if sine == 0:
+        raise ZeroDivisionError("Undefined for multiples of π")
+    return 1/sine
+
+def cot(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Trigonometry#Trigonometric_ratios
+    sine = sin(x,pi)
+    if sine == 0:
+        raise ZeroDivisionError("Undefined for multiples of π")
+    return cos(x,pi)/sine
+
+def cosh(x): #https://en.wikipedia.org/wiki/Hyperbolic_functions#Exponential_definitions
+    return (exp(x)+exp(-x))/2
+
+def sinh(x): #https://en.wikipedia.org/wiki/Hyperbolic_functions#Exponential_definitions
+    return (exp(x)-exp(-x))/2
+
+def tanh(x): #https://en.wikipedia.org/wiki/Hyperbolic_functions#Exponential_definitions
+    return sinh(x)/cosh(x)
+
+def sech(x): #https://en.wikipedia.org/wiki/Hyperbolic_functions#Exponential_definitions
+    return 1/cosh(x)
+
+def csch(x): #https://en.wikipedia.org/wiki/Hyperbolic_functions#Exponential_definitions
+    return 1/sinh(x)
+
+def coth(x): #https://en.wikipedia.org/wiki/Hyperbolic_functions#Exponential_definitions
+    return cosh(x)/sinh(x)
 
 def recursion_gamma(x, pi=chudnovsky_pi(), sin_func=sin): # https://en.wikipedia.org/wiki/Gamma_function
     # Recursion limit
