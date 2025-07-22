@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import math
 import random
 
-def plot(func, true_func, step=2, true_domain=[-5,5], exclude=set()):
+def plot(func, true_func, step: int = 2, true_domain: list[int,int] = [-5,5], exclude: set = set()):
     abscissa = []
     y1 = []
     y2 = []
@@ -78,7 +78,7 @@ class Registry:
 def phi(): # https://en.wikipedia.org/wiki/Fibonacci_sequence#Relation_to_the_golden_ratio
     return (1+5**0.5)/2
 
-def chudnovsky_pi(n=5): # https://en.wikipedia.org/wiki/Chudnovsky_algorithm
+def chudnovsky_pi(n: int = 5): # https://en.wikipedia.org/wiki/Chudnovsky_algorithm
     inverse_pi = 0
     for k in range(n+1):
         numerator = ((-1)**k) * factorial(6*k) * (545140134*k + 13591409)
@@ -86,7 +86,7 @@ def chudnovsky_pi(n=5): # https://en.wikipedia.org/wiki/Chudnovsky_algorithm
         inverse_pi += numerator/denominator
     return (1/(inverse_pi))/12
 
-def leibniz_pi(n=10_000_000): #https://en.wikipedia.org/wiki/Leibniz_formula_for_%CF%80
+def leibniz_pi(n: int = 10_000_000): #https://en.wikipedia.org/wiki/Leibniz_formula_for_%CF%80
     total = 0
     sign = 1
     for i in range(1,n+1,2):
@@ -94,13 +94,13 @@ def leibniz_pi(n=10_000_000): #https://en.wikipedia.org/wiki/Leibniz_formula_for
         sign*=-1
     return total*4
 
-def tau(pi_function=chudnovsky_pi, n=5): #https://en.wikipedia.org/wiki/Tau_(mathematics)
+def tau(pi_function=chudnovsky_pi, n: int = 5): #https://en.wikipedia.org/wiki/Tau_(mathematics)
     return 2*pi_function(n)
 
-def exp_e(n=100): # https://en.wikipedia.org/wiki/E_(mathematical_constant)
+def exp_e(n: int = 100): # https://en.wikipedia.org/wiki/E_(mathematical_constant)
     return exp(1, n)
 
-def montecarlo_e(n=10_000_000): # https://en.wikipedia.org/wiki/Monte_Carlo_integration
+def montecarlo_e(n: int = 10_000_000): # https://en.wikipedia.org/wiki/Monte_Carlo_integration
     values = 0
     for _ in range(n):
         x=0
@@ -109,27 +109,27 @@ def montecarlo_e(n=10_000_000): # https://en.wikipedia.org/wiki/Monte_Carlo_inte
             values += 1
     return values/n
 
-def euler_gamma(n=100_000): # https://en.wikipedia.org/wiki/Euler%27s_constant#Integrals
+def euler_gamma(n: int = 100_000): # https://en.wikipedia.org/wiki/Euler%27s_constant#Integrals
     return sum(1/k - ln(1 + 1/k) for k in range(1, n+1))
 
-def fibonnaci(x, phi=phi()): #https://en.wikipedia.org/wiki/Fibonacci_sequence#Relation_to_the_golden_ratio
+def fibonnaci(x: int, phi=phi()): #https://en.wikipedia.org/wiki/Fibonacci_sequence#Relation_to_the_golden_ratio
     return int((phi**x - (-phi)**(-x))/(2*phi-1))
 
-def factorial(x): # Factorial function using incremented multiplications
-    assert isinstance(x,int) and x>=0
+def factorial(x: int): # Factorial function using incremented multiplications
+    assert x>=0
     if x<2:
         return 1
     for i in range(2,x+1):
         x*=i
     return x
 
-def exp(x,n=100): # https://en.wikipedia.org/wiki/Taylor_series
+def exp(x, n: int = 100): # https://en.wikipedia.org/wiki/Taylor_series
     final = 0
     for k in range(0,n+1):
         final+=(x**k)/factorial(k)
     return final
 
-def ln(x, n=1e-10): # https://en.wikipedia.org/wiki/Newton%27s_method
+def ln(x, epsilon: float = 1e-10): # https://en.wikipedia.org/wiki/Newton%27s_method
     y = 1
     while abs(exp(y,20) - x) > n:
         y = y-1 + x/exp(y,20)
@@ -179,7 +179,7 @@ def recursion_gamma(x, pi=chudnovsky_pi(), sin_func=sin): # https://en.wikipedia
         return (x-1)*recursion_gamma(x-1)
     return pi/(sin_func(pi*x)*recursion_gamma(1-x))
 
-def lanczos_gamma(x, n_coef=9, pi=math.pi, sin_func=math.sin, exp_func=math.exp): # https://en.wikipedia.org/wiki/Lanczos_approximation
+def lanczos_gamma(x, n_coef: int = 9, pi: float = math.pi, sin_func=math.sin, exp_func=math.exp): # https://en.wikipedia.org/wiki/Lanczos_approximation
     match n_coef:
         case 5:
             g_coefficient = 5
