@@ -23,3 +23,7 @@ class complex():
         Returns the modulus of the complex number
         '''
         return (self.Re()**2 + self.Im()**2) ** 0.5
+    
+    def __str__(self):
+        operator = "+" if self.imaginary >= 0 else "-"
+        return f"{self.real} {operator} {self.imaginary}i" 
