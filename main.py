@@ -168,7 +168,10 @@ def cos(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Taylor_series#Tr
     return result
 
 def tan(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Trigonometry#Trigonometric_ratios
-    return sin(x,pi)/cos(x,pi)
+    cosine = cos(x,pi)
+    if cosine == 0:
+        raise ZeroDivisionError("Undefined for x = π/2 or x = -π/2")
+    return sin(x,pi)/cosine
 
 def recursion_gamma(x, pi=chudnovsky_pi(), sin_func=sin): # https://en.wikipedia.org/wiki/Gamma_function
     # Recursion limit
