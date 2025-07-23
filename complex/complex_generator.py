@@ -126,13 +126,21 @@ class complex():
     def __mod__(self): ...
 
     def __pow__(self, exponent):
+        # complex**0
         if not exponent:
             return 1
-        else:
+        
+        # complex**real
+        elif not isinstance(exponent, complex):
             modulus = abs(self) ** exponent
             cos_arg = cos(self.arg() * exponent)
             sin_arg = sin(self.arg() * exponent)
             return complex(real = modulus*cos_arg, imaginary=modulus*sin_arg)
+        
+        # complex**complex
+        else:
+            new_exponent = exponent * self.ln()
+            return new_exponent.e()
 
     def e(self):
         '''
@@ -174,8 +182,6 @@ class complex():
 
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
-c = complex(real = 0, imaginary = 3)
+i = complex(real = 0, imaginary = 1)
 
-print(a.ln())
-print(b.ln())
-print(c.ln())
+print(i**i)
