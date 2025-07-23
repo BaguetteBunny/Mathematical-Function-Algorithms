@@ -37,6 +37,10 @@ def montecarlo_e(n: int = 10_000_000): # https://en.wikipedia.org/wiki/Monte_Car
 def mascheroni_gamma(n: int = 10_000): # https://en.wikipedia.org/wiki/Euler%27s_constant#Integrals
     return sum(1/k - ln(1 + 1/k) for k in range(1, n+1))
 
+def sqrt(x):
+    assert x>= 0
+    return x**0.5
+
 def fibonnaci(x: int, phi=phi()): #https://en.wikipedia.org/wiki/Fibonacci_sequence#Relation_to_the_golden_ratio
     assert x>=0
     return int((phi**x - (-phi)**(-x))/(2*phi-1))
