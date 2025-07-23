@@ -94,6 +94,14 @@ def tan(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Trigonometry#Tri
         raise ZeroDivisionError("Undefined for odd multiples of π/2")
     return sin(x,pi)/cosine
 
+def arctan(x, n=75, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Inverse_trigonometric_functions#Infinite_series
+    if abs(x) <= 1:
+        return sum(((-1)**i * x**(2*i + 1)) / (2*i + 1) for i in range(n))
+    elif x > 0:
+        return pi/2 - arctan(1/x, n)
+    else:
+        return pi/2 - arctan(1/x, n)
+
 def sec(x, pi=chudnovsky_pi()): # https://en.wikipedia.org/wiki/Trigonometry#Trigonometric_ratios
     cosine = cos(x,pi)
     if cosine == 0:
