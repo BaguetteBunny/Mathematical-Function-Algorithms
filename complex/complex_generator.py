@@ -125,6 +125,15 @@ class complex():
 
     def __mod__(self): ...
 
+    def __pow__(self, exponent):
+        if not exponent:
+            return 1
+        else:
+            modulus = abs(self) ** exponent
+            cos_arg = cos(self.arg() * exponent)
+            sin_arg = sin(self.arg() * exponent)
+            return complex(real = modulus*cos_arg, imaginary=modulus*sin_arg)
+
     def e(self):
         '''
         Returns the e^z
@@ -160,4 +169,4 @@ class complex():
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
 
-print(complex(83991, 39455*sqrt(3)).isEisenstein())
+print(a**2)
