@@ -7,20 +7,20 @@ class complex():
         '''
         Initiate complex number by attributing a Real part and Imaginary part seperately.
         '''
-        self.real = real
-        self.imaginary = imaginary
+        self.__real = real
+        self.__imaginary = imaginary
 
     def Re(self):
         '''
         Returns the real (Re) part of the complex number
         '''
-        return self.real
+        return self.__real
     
     def Im(self):
         '''
         Returns the Imaginary part of the complex number
         '''
-        return self.imaginary
+        return self.__imaginary
     
     def conj(self):
         '''
@@ -91,8 +91,6 @@ class complex():
 
     def __mod__(self): ...
 
-    def __pow__(self): ...
-
     def e(self):
         '''
         Returns the e^z
@@ -118,12 +116,22 @@ class complex():
         return real_part + imaginary_part
 
     def __str__(self):
-        if self.imaginary >=0 :
-            new_imaginary = f" + {self.imaginary}i"
+        if self.__imaginary >=0 :
+            new_imaginary = f" + {self.__imaginary}i"
         else:
-            new_imaginary = f" - {str(self.imaginary)[1:]}i"
+            new_imaginary = f" - {str(self.__imaginary)[1:]}i"
         
-        return f"{self.real}{new_imaginary}" 
+        return f"{self.__real}{new_imaginary}" 
 
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
+
+print(b**0)
+print(b**1)
+print(b**2)
+print(b**3)
+
+print(b**0)
+print(b**-1)
+print(b**-2)
+print(b**-3)
