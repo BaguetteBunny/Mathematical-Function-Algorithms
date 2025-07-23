@@ -57,6 +57,17 @@ class complex():
         '''
         return (float(self.Re()).is_integer() and float(self.Im()).is_integer())
 
+    def isEisenstein(self): # https://en.wikipedia.org/wiki/Eisenstein_integer
+        '''
+        Returns True if the complex number is a Eisenstein Integer
+        ''' 
+        b: float = round(self.Im() * (2/sqrt(3)), 10)
+        a: float = round((self.Re() + b/2), 10)
+
+        print(a, b)
+
+        return a.is_integer() and b.is_integer()
+
     def __abs__(self):
         '''
         Returns the modulus of the complex number
@@ -149,9 +160,4 @@ class complex():
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
 
-print(complex(2,5).arg())
-print(complex(-2,5).arg())
-print(complex(-2,-5).arg())
-print(complex(0,-5).arg())
-print(complex(0,5).arg())
-print(complex(0,0).arg())
+print(complex(83991, 39455*sqrt(3)).isEisenstein())
