@@ -36,18 +36,18 @@ class complex():
         y = self.Im()
 
         match (x, y):
-            case (0, 0):
-                return float('nan')
-            case (0, y) if y > 0:
-                return pi / 2
-            case (0, y) if y < 0:
-                return -pi / 2
             case (x, y) if x > 0:
                 return arctan(y / x)
             case (x, y) if x < 0 and y >= 0:
-                return (arctan(y / x) + pi)%(pi/2)
+                return arctan(y / x) + pi
             case (x, y) if x < 0 and y < 0:
-                return (arctan(y / x) - pi)%(pi/2)
+                return arctan(y / x) - pi
+            case (x, y) if x == 0 and y > 0:
+                return pi / 2
+            case (x, y) if x == 0 and y < 0:
+                return -pi / 2
+            case (x, y) if x == 0 and y == 0:
+                raise ValueError("undefined atan2(0, 0)")
             case _:
                 raise Exception("How the fuck did this happen")
             
@@ -146,6 +146,12 @@ class complex():
 
         return cisx * complex(real = exp(re), imaginary = 0)
     
+    def ln(self):
+        '''
+        Returns ln(z)
+        '''
+        return complex(real = ln(abs(self)), imaginary = self.arg())
+    
     def sin(self):
         '''
         Returns sin(z)
@@ -168,5 +174,8 @@ class complex():
 
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
+c = complex(real = 0, imaginary = 3)
 
-print(a**2)
+print(a.ln())
+print(b.ln())
+print(c.ln())
