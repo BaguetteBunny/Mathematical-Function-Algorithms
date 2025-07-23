@@ -28,6 +28,29 @@ class complex():
         '''
         return complex(real = self.Re(), imaginary = (-1)*self.Im())
 
+    def arg(self, pi: float = chudnovsky_pi()):
+        '''
+        Returns complex argument θ
+        '''
+        x = self.Re()
+        y = self.Im()
+
+        match (x, y):
+            case (0, 0):
+                return float('nan')
+            case (0, y) if y > 0:
+                return pi / 2
+            case (0, y) if y < 0:
+                return -pi / 2
+            case (x, y) if x > 0:
+                return arctan(y / x)
+            case (x, y) if x < 0 and y >= 0:
+                return (arctan(y / x) + pi)%(pi/2)
+            case (x, y) if x < 0 and y < 0:
+                return (arctan(y / x) - pi)%(pi/2)
+            case _:
+                raise Exception("How the fuck did this happen")
+            
     def isGaussian(self): # https://en.wikipedia.org/wiki/Gaussian_integer
         '''
         Returns True if the complex number is a Gaussian Integer
@@ -126,12 +149,9 @@ class complex():
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
 
-print(b**0)
-print(b**1)
-print(b**2)
-print(b**3)
-
-print(b**0)
-print(b**-1)
-print(b**-2)
-print(b**-3)
+print(complex(2,5).arg())
+print(complex(-2,5).arg())
+print(complex(-2,-5).arg())
+print(complex(0,-5).arg())
+print(complex(0,5).arg())
+print(complex(0,0).arg())
