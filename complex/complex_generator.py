@@ -11,6 +11,7 @@ class complex():
         self.__imaginary = imaginary
         
         self.__pi = chudnovsky_pi()
+        self.__current = 0
 
     def Re(self):
         '''
@@ -69,6 +70,59 @@ class complex():
         print(a, b)
 
         return a.is_integer() and b.is_integer()
+
+    def __iter__(self):
+        yield self.Re()
+        yield self.Im()
+
+    def __getitem__(self, ident):
+        if ident == 0 or ident == "R":
+            return self.Re()
+        
+        elif ident == 1 or ident == "I":
+            return self.Im()
+        
+        raise KeyError(f"Invalid key: {ident}")
+
+    def __setitem__(self, ident, value):
+        if not isinstance(value, (int, float)):
+            return NotImplemented
+        
+        if ident == 0 or ident == "R":
+            self.__real = value
+            return
+        
+        elif ident == 1 or ident == "I":
+            self.__imaginary = value
+            return
+
+        raise KeyError(f"Invalid key: {ident}")
+
+    def __delitem__(self, ident):
+        if ident == 0 or ident == "R":
+            self.__real = 0
+            return
+        
+        elif ident == 1 or ident == "I":
+            self.__imaginary = 0
+            return
+
+        raise KeyError(f"Invalid key: {ident}")
+
+    def __reversed__(self):
+        self.__real, self.__imaginary = self.__imaginary, self.__real
+
+    def __len__(self):
+        return 2
+    
+    def __contains__(self, z):
+        if isinstance(z, complex):
+            return self.__eq__(z)
+        
+        elif isinstance(z, (int, float)):
+            return self.Re() == z or self.Im() == z
+        
+        return False
 
     def __abs__(self):
         '''
