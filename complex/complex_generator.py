@@ -9,6 +9,8 @@ class complex():
         '''
         self.__real = real
         self.__imaginary = imaginary
+        
+        self.__pi = chudnovsky_pi()
 
     def Re(self):
         '''
@@ -28,7 +30,7 @@ class complex():
         '''
         return complex(real = self.Re(), imaginary = (-1)*self.Im())
 
-    def arg(self, pi: float = chudnovsky_pi()):
+    def arg(self):
         '''
         Returns complex argument θ
         '''
@@ -39,13 +41,13 @@ class complex():
             case (x, y) if x > 0:
                 return arctan(y / x)
             case (x, y) if x < 0 and y >= 0:
-                return arctan(y / x) + pi
+                return arctan(y / x) + self.__pi
             case (x, y) if x < 0 and y < 0:
-                return arctan(y / x) - pi
+                return arctan(y / x) - self.__pi
             case (x, y) if x == 0 and y > 0:
-                return pi / 2
+                return self.__pi / 2
             case (x, y) if x == 0 and y < 0:
-                return -pi / 2
+                return -self.__pi / 2
             case (x, y) if x == 0 and y == 0:
                 raise ValueError("undefined atan2(0, 0)")
             case _:
@@ -74,49 +76,124 @@ class complex():
         '''
         return (self.Re()**2 + self.Im()**2) ** 0.5
     
-    def __add__(self, z: 'complex'):
+    def __add__(self, z):
         '''
         Returns the sum of two complex numbers
         '''
-        re_sum = self.Re() + z.Re()
-        im_sum = self.Im() + z.Im()
+        if isinstance(z, complex):
+            re_sum = self.Re() + z.Re()
+            im_sum = self.Im() + z.Im()
+
+        elif isinstance(z, (int, float)):
+            re_sum = self.Re() + z
+            im_sum = self.Im()
+
+        else:
+            return NotImplemented
+
         return complex(real = re_sum, imaginary = im_sum)
     
-    def __sub__(self, z: 'complex'):
+    def __radd__(self, z):
+        return self.__add__(z)
+    
+    def __sub__(self, z):
         '''
         Returns the difference of two complex numbers
         '''
-        re_diff = self.Re() - z.Re()
-        im_diff = self.Im() - z.Im()
+        if isinstance(z, complex):
+            re_diff = self.Re() - z.Re()
+            im_diff = self.Im() - z.Im()
+
+        elif isinstance(z, (int, float)):
+            re_diff = self.Re() - z
+            im_diff = self.Im()
+
+        else:
+            return NotImplemented
+        
         return complex(real = re_diff, imaginary = im_diff)
     
-    def __mul__(self, z: 'complex'):
+    def __rsub__(self, z):
+        if isinstance(z, (int, float)):
+            re_diff = z - self.Re()
+            im_diff = 0 - self.Im()
+
+            return complex(real = re_diff, imaginary = im_diff)
+        
+        return NotImplemented
+    
+    def __mul__(self, z):
         '''
         Returns the product of two complex numbers
         '''
-        re_prod = self.Re()*z.Re() - self.Im()*z.Im()
-        im_prod = self.Re()*z.Im() + self.Im()*z.Re()
+        if isinstance(z, complex):
+            re_prod = self.Re()*z.Re() - self.Im()*z.Im()
+            im_prod = self.Re()*z.Im() + self.Im()*z.Re()
+
+        elif isinstance(z, (int, float)):
+            re_prod = self.Re()*z
+            im_prod = self.Im()*z
+        
+        else:
+            return NotImplemented
+        
         return complex(real = re_prod, imaginary= im_prod)
     
-    def __matmul__(self, z: 'complex'):
-        raise NotImplementedError
+    def __rmul__(self, z):
+        return self.__mul__(z)
+    
+    def __matmul__(self, z):
+        f'{z}'
+        return NotImplemented
 
-    def __truediv__(self, z: 'complex'):
+    def __truediv__(self, z):
         '''
         Returns the quotient of two complex numbers
         '''
-        if not (z.Re() or z.Im()):
-            raise ZeroDivisionError(f"{self} cannot be divided by {z}.")
+        if isinstance(z, complex):
+            if not (z.Re() or z.Im()):
+                raise ZeroDivisionError(f"{self} cannot be divided by {z}.")
 
-        re_quot = (self.Re()*z.Re() + self.Im()*z.Im()) / (z.Re()**2 + z.Im()**2)
-        im_quot = (self.Im()*z.Re() - self.Re()*z.Im()) / (z.Re()**2 + z.Im()**2)
+            re_quot = (self.Re()*z.Re() + self.Im()*z.Im()) / (z.Re()**2 + z.Im()**2)
+            im_quot = (self.Im()*z.Re() - self.Re()*z.Im()) / (z.Re()**2 + z.Im()**2)
+
+        elif isinstance(z, (int, float)):
+            if not z:
+                raise ZeroDivisionError(f"{self} cannot be divided by {z}.")
+            
+            re_quot = self.Re() / z
+            im_quot = self.Im() / z
+
+        else:
+            return NotImplemented
+
         return complex(real = re_quot, imaginary= im_quot)
-    
-    def __floordiv__(self, z: 'complex'):
+
+    def __rtruediv__(self, z):
+        if isinstance(z, (int, float)):
+            if not (self.Re() or self.Im()):
+                raise ZeroDivisionError(f"{z} cannot be divided by {self}.")
+
+            new_nominator = self.conj() * z
+            new_denominator = self.Re()**2 + self.Im()**2
+
+            return new_nominator.__truediv__(new_denominator)
+        
+        return NotImplemented
+
+    def __floordiv__(self, z):
         '''
         Returns the floored quotient of two complex numbers
         '''
         divided_z = self.__truediv__(z)
+
+        re = divided_z.Re()
+        im = divided_z.Im()
+
+        return complex(real = int(re), imaginary = int(im))
+    
+    def __rfloordiv__(self, z):
+        divided_z = self.__rtruediv__(z)
 
         re = divided_z.Re()
         im = divided_z.Im()
@@ -141,6 +218,15 @@ class complex():
         else:
             new_exponent = exponent * self.ln()
             return new_exponent.e()
+        
+    def __rpow__(self, base):
+        if base > 0:
+            new_ln = ln(base)
+        else:
+            new_ln = complex(real = ln(abs(base)), imaginary = self.__pi)
+
+        new_exponent = self * new_ln
+        return new_exponent.e()
 
     def e(self):
         '''
@@ -183,5 +269,3 @@ class complex():
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
 i = complex(real = 0, imaginary = 1)
-
-print(i**i)
