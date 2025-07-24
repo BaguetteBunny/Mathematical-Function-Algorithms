@@ -202,31 +202,41 @@ class complex():
 
     def __mod__(self): ...
 
-    def __pow__(self, exponent):
+    def __pow__(self, z):
         # complex**0
-        if not exponent:
+        if not z:
             return 1
         
         # complex**real
-        elif not isinstance(exponent, complex):
-            modulus = abs(self) ** exponent
-            cos_arg = cos(self.arg() * exponent)
-            sin_arg = sin(self.arg() * exponent)
+        elif not isinstance(z, complex):
+            modulus = abs(self) ** z
+            cos_arg = cos(self.arg() * z)
+            sin_arg = sin(self.arg() * z)
             return complex(real = modulus*cos_arg, imaginary=modulus*sin_arg)
         
         # complex**complex
         else:
-            new_exponent = exponent * self.ln()
+            new_exponent = z * self.ln()
             return new_exponent.e()
         
-    def __rpow__(self, base):
-        if base > 0:
-            new_ln = ln(base)
+    def __rpow__(self, z):
+        if z > 0:
+            new_ln = ln(z)
         else:
-            new_ln = complex(real = ln(abs(base)), imaginary = self.__pi)
+            new_ln = complex(real = ln(abs(z)), imaginary = self.__pi)
 
         new_exponent = self * new_ln
         return new_exponent.e()
+
+    def __eq__(self, z):
+        if isinstance(z, complex):
+            return (self.Re() == z.Re()) and (self.Im() == z.Im())
+        
+        elif isinstance(z, (int,float)):
+            return self.Re() == z
+    
+    def __ne__(self, z):
+        return not self.__eq__(z)
 
     def e(self):
         '''
@@ -269,3 +279,4 @@ class complex():
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
 i = complex(real = 0, imaginary = 1)
+c = complex(real = 1, imaginary = 0)
