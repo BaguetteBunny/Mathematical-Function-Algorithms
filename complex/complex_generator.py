@@ -276,7 +276,20 @@ class complex():
         
         return f"{self.__real}{new_imaginary}" 
 
+    def __bool__(self):
+        if self.Re() and self.Im():
+            return True
+        else:
+            return False
+        
+    def __int__(self):
+        return int(self.Re() + self.Im())
+    
+    def __float__(self):
+        return float(self.Re() + self.Im())
+
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
 i = complex(real = 0, imaginary = 1)
 c = complex(real = 1, imaginary = 0)
+empty = complex(0,0)
