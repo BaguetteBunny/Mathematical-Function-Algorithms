@@ -277,6 +277,23 @@ class complex():
         new_exponent = self * new_ln
         return new_exponent.e()
 
+    def __matmul__(self, z):
+        '''
+        Calculates the outer product of two vectorized complex numbers.
+        '''
+        if isinstance(z, complex):
+            return [
+                [self.Re() * z.Re(), self.Re() * z.Im()],
+                [self.Im() * z.Re(), self.Im() * z.Im()]]
+        
+        elif isinstance(z, (int, float)):
+            return [
+                [self.Re() * z, 0],
+                [self.Im() * z, 0]]
+        
+        else:
+            raise TypeError(f"unsupported operand type(s) for dot(): 'complex' and '{type(z)}'")
+
     def __eq__(self, z):
         if isinstance(z, complex):
             return (self.Re() == z.Re()) and (self.Im() == z.Im())
