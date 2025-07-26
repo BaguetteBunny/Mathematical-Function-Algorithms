@@ -3,7 +3,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from functions.functions import *
 
 class complex():
-    def __init__(self, real = 0, imaginary = 0):
+    def __init__(self, real = 0.0, imaginary = 0.0):
         '''
         Initiate complex number by attributing a Real part and Imaginary part.
         '''
@@ -12,7 +12,6 @@ class complex():
         self.__imaginary = imaginary
         
         self.__pi = chudnovsky_pi()
-        self.__current = 0
 
     def Re(self):
         '''
