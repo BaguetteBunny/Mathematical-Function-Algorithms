@@ -325,7 +325,7 @@ class complex():
             return (self.Re() == z.Re()) and (self.Im() == z.Im())
         
         elif isinstance(z, (int,float)):
-            return self.Re() == z
+            return self.Re() == z and not self.Im()
     
     def __ne__(self, z):
         '''
