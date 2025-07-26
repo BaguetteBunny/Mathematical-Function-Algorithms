@@ -291,7 +291,7 @@ class complex():
                 [self.Im() * z, 0]]
         
         else:
-            raise TypeError(f"unsupported operand type(s) for dot(): 'complex' and '{type(z)}'")
+            raise TypeError(f"unsupported operand type(s) for @: 'complex' and '{type(z)}'")
 
     def __eq__(self, z):
         if isinstance(z, complex):
@@ -379,7 +379,7 @@ class complex():
             return - self.Im() * z
         
         else:
-            raise TypeError(f"unsupported operand type(s) for dot(): 'complex' and '{type(z)}'")
+            raise TypeError(f"unsupported operand type(s) for cross(): 'complex' and '{type(z)}'")
 
     def is_orthogonal(self, z):
         return self.dot(z) == 0
