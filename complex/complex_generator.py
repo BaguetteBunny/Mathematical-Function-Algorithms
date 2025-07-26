@@ -337,10 +337,10 @@ class complex():
             return False
         
     def __int__(self):
-        return int(self.Re() + self.Im())
+        return int(self.__abs__)
     
     def __float__(self):
-        return float(self.Re() + self.Im())
+        return float(self.__abs__)
 
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
