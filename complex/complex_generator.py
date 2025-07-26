@@ -354,6 +354,16 @@ class complex():
         
         else:
             raise TypeError(f"unsupported operand type(s) for dot(): 'complex' and '{type(z)}'")
+        
+    def cross(self, z):
+        if isinstance(z, complex):
+            return self.Re() * z.Im() - self.Im() * z.Re()
+        
+        elif isinstance(z, (int, float)):
+            return - self.Im() * z
+        
+        else:
+            raise TypeError(f"unsupported operand type(s) for dot(): 'complex' and '{type(z)}'")
 
 
 
