@@ -70,10 +70,16 @@ class complex():
         return a.is_integer() and b.is_integer()
  
     def __iter__(self):
+        '''
+        Turns complex number into iterable.
+        '''
         yield self.Re()
         yield self.Im()
 
     def __getitem__(self, ident):
+        '''
+        Gets an element in a complex identity.
+        '''
         if ident == 0 or ident == "R":
             return self.Re()
         
@@ -83,6 +89,9 @@ class complex():
         raise KeyError(f"Invalid key: {ident}")
 
     def __setitem__(self, ident, value):
+        '''
+        Sets an element in a complex identity.
+        '''
         if not isinstance(value, (int, float)):
             return NotImplemented
         
@@ -97,6 +106,9 @@ class complex():
         raise KeyError(f"Invalid key: {ident}")
 
     def __delitem__(self, ident):
+        '''
+        Deletes an element in a complex identity.
+        '''
         if ident == 0 or ident == "R":
             self.__real = 0
             return
@@ -108,12 +120,21 @@ class complex():
         raise KeyError(f"Invalid key: {ident}")
 
     def __reversed__(self):
+        '''
+        Swaps real and imaginary parts of a complex number
+        '''
         self.__real, self.__imaginary = self.__imaginary, self.__real
 
     def __len__(self):
+        '''
+        Always returns 2 since there is always a real and imaginary part, even if null.
+        '''
         return 2
     
     def __contains__(self, z):
+        '''
+        Checks if element is inside complex number
+        '''
         if isinstance(z, complex):
             return self.__eq__(z)
         
@@ -251,6 +272,9 @@ class complex():
     def __mod__(self): ...
 
     def __pow__(self, z):
+        '''
+        Returns the complex number raised to the power of z
+        '''
         # complex**0
         if not z:
             return 1
@@ -294,6 +318,9 @@ class complex():
             raise TypeError(f"unsupported operand type(s) for @: 'complex' and '{type(z)}'")
 
     def __eq__(self, z):
+        '''
+        Checks if two complex numbers are equal
+        '''
         if isinstance(z, complex):
             return (self.Re() == z.Re()) and (self.Im() == z.Im())
         
@@ -301,6 +328,9 @@ class complex():
             return self.Re() == z
     
     def __ne__(self, z):
+        '''
+        Checks if two complex numbers are not equal
+        '''
         return not self.__eq__(z)
 
     def e(self):
@@ -354,6 +384,9 @@ class complex():
         return float(self.__abs__())
 
     def normalize(self):
+        '''
+        Returns a normalized vectorization of a complex number.
+        '''
         modulus = self.__abs__()
         if not modulus:
             return complex(real = 0, imaginary = 0)
@@ -362,6 +395,9 @@ class complex():
                        imaginary = self.Im() / modulus)
     
     def dot(self, z):
+        '''
+        Returns the dot product between two vectorized complex numbers.
+        '''
         if isinstance(z, complex):
             return self.Re() * z.Re() + self.Im() * z.Im()
         
@@ -372,6 +408,9 @@ class complex():
             raise TypeError(f"unsupported operand type(s) for dot(): 'complex' and '{type(z)}'")
         
     def cross(self, z):
+        '''
+        Returns the cross product between two vectorized complex numbers.
+        '''
         if isinstance(z, complex):
             return self.Re() * z.Im() - self.Im() * z.Re()
         
@@ -382,9 +421,15 @@ class complex():
             raise TypeError(f"unsupported operand type(s) for cross(): 'complex' and '{type(z)}'")
 
     def is_orthogonal(self, z):
+        '''
+        Checks if two vectorized complex numbers are orthogonal.
+        '''
         return self.dot(z) == 0
     
     def is_collinear(self, z):
+        '''
+        Checks if two vectorized complex numbers are collinear.
+        '''
         return self.cross(z) == 0
 
 a = complex(real = 4, imaginary = 3)
