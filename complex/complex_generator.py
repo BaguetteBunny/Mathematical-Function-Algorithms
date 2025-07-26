@@ -3,10 +3,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from functions.functions import *
 
 class complex():
-    def __init__(self, real, imaginary):
+    def __init__(self, real = 0, imaginary = 0):
         '''
-        Initiate complex number by attributing a Real part and Imaginary part seperately.
+        Initiate complex number by attributing a Real part and Imaginary part.
         '''
+
         self.__real = real
         self.__imaginary = imaginary
         
@@ -53,24 +54,22 @@ class complex():
                 raise ValueError("undefined atan2(0, 0)")
             case _:
                 raise Exception("How the fuck did this happen")
-            
-    def isGaussian(self): # https://en.wikipedia.org/wiki/Gaussian_integer
+        
+    def is_gaussian(self): # https://en.wikipedia.org/wiki/Gaussian_integer
         '''
         Returns True if the complex number is a Gaussian Integer
         '''
         return (float(self.Re()).is_integer() and float(self.Im()).is_integer())
 
-    def isEisenstein(self): # https://en.wikipedia.org/wiki/Eisenstein_integer
+    def is_eisenstein(self): # https://en.wikipedia.org/wiki/Eisenstein_integer
         '''
         Returns True if the complex number is a Eisenstein Integer
         ''' 
         b: float = round(self.Im() * (2/sqrt(3)), 10)
         a: float = round((self.Re() + b/2), 10)
 
-        print(a, b)
-
         return a.is_integer() and b.is_integer()
-
+ 
     def __iter__(self):
         yield self.Re()
         yield self.Im()
@@ -196,10 +195,6 @@ class complex():
     def __rmul__(self, z):
         return self.__mul__(z)
     
-    def __matmul__(self, z):
-        f'{z}'
-        return NotImplemented
-
     def __truediv__(self, z):
         '''
         Returns the quotient of two complex numbers
@@ -263,7 +258,7 @@ class complex():
         
         # complex**real
         elif not isinstance(z, complex):
-            modulus = abs(self) ** z
+            modulus = self.__abs__() ** z
             cos_arg = cos(self.arg() * z)
             sin_arg = sin(self.arg() * z)
             return complex(real = modulus*cos_arg, imaginary=modulus*sin_arg)
@@ -337,13 +332,33 @@ class complex():
             return False
         
     def __int__(self):
-        return int(self.__abs__)
+        return int(self.__abs__())
     
     def __float__(self):
-        return float(self.__abs__)
+        return float(self.__abs__())
+
+    def normalize(self):
+        modulus = self.__abs__()
+        if not modulus:
+            return complex(real = 0, imaginary = 0)
+        
+        return complex(real = self.Re() / modulus, 
+                       imaginary = self.Im() / modulus)
+    
+    def dot(self, z):
+        if isinstance(z, complex):
+            return self.Re() * z.Re() + self.Im() * z.Im()
+        
+        elif isinstance(z, (int, float)):
+            return self.Re() * z
+        
+        else:
+            raise TypeError(f"unsupported operand type(s) for dot(): 'complex' and '{type(z)}'")
+
+
 
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
 i = complex(real = 0, imaginary = 1)
 c = complex(real = 1, imaginary = 0)
-empty = complex(0,0)
+empty = complex()
