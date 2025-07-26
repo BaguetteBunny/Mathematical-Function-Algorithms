@@ -365,7 +365,11 @@ class complex():
         else:
             raise TypeError(f"unsupported operand type(s) for dot(): 'complex' and '{type(z)}'")
 
-
+    def is_orthogonal(self, z):
+        return self.dot(z) == 0
+    
+    def is_collinear(self, z):
+        return self.cross(z) == 0
 
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
