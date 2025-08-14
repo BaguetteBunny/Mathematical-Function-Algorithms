@@ -49,21 +49,3 @@ functions.register(name="tan", method_name="default", description="Generates tan
 functions.register(name="gamma", method_name="recursive", description="Generates gamma of x at suboptimal pace, the expansion of factorial using the recursive method.", func=recursion_gamma)
 functions.register(name="gamma", method_name="lanczos", description="Generates an approximation of gamma of x featuring Lanczos' approximation method.", func=lanczos_gamma)
 print(f"Loaded functions: {functions.available()}\n")
-
-graph(lanczos_gamma, math.gamma, step=0.001, exclude=set(-i for i in range(0,51)))
-
-"""
-for name, methods in constants.registry.items():
-    for method in methods:
-        print(constants.get(name=name, method_name=method, print_description=True)())
-
-for name, methods in functions.registry.items():
-    for method in methods:
-        print(functions.get(name=name, method_name=method, print_description=True)(x=5))
-
-graph(lanczos_gamma, math.gamma, step=0.001, exclude=set(-i for i in range(0,51)))
-graph(sin, math.sin, step=0.001)
-graph(exp, math.exp, step=0.001)
-"""
-
-
