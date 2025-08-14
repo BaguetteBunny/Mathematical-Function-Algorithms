@@ -1,6 +1,4 @@
-import sys, os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from functions.functions import *
+from functions import *
 
 class complex():
     def __init__(self, real = 0.0, imaginary = 0.0):
