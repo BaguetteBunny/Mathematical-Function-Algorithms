@@ -10,6 +10,30 @@ class complex():
         self.__imaginary = imaginary
         
         self.__pi = chudnovsky_pi()
+    
+    def display_cartesian(self):
+        '''
+        Displays complex number in cartesian form
+        '''
+        return self.__str__()
+    
+    def display_exponential(self):
+        '''
+        Displays complex number in exponential form
+        '''
+        modulus = self.__abs__()
+        argument = self.arg()
+        
+        return f"{modulus} * e^(i * {argument})"
+    
+    def display_polar(self):
+        '''
+        Displays complex number in polar form
+        '''
+        modulus = self.__abs__()
+        argument = self.arg()
+        
+        return f"{modulus} * cis({argument})"
 
     def Re(self):
         '''
