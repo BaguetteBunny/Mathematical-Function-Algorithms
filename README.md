@@ -137,6 +137,12 @@ You can view all available non-dunder entries using:
 print([func for func in dir(complex) if callable(getattr(complex, func)) and not func.startswith("__")])
 ```
 
+Declare a new complex number using either the cartesian form or polar form:
+```
+a = complex(real = -8.55, imaginary = 6.3)
+b = complex(modulus = 0.5, argument = 24)
+```
+
 ## ⚖️ License
 
 - [MIT](license)
