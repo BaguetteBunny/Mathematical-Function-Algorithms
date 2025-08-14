@@ -1,4 +1,4 @@
-# 🧮 VanillaMath: Constants & Functions with Zero Dependencies
+# 🧮 VanillaMath: Constants, Functions, and Complex Numbers with Zero Dependencies
 
 A library of mathematical constants and functions, grouped by purpose and implemented using a variety of numerical techniques. This repository is designed for experimentation, educational use, and precision testing in mathematical computation.
 
@@ -6,12 +6,13 @@ A library of mathematical constants and functions, grouped by purpose and implem
 
 ## 📦 Overview
 
-There are **four main categories**:
+There are **five main categories**:
 
 1. 🔁 **Factorial & Gamma Computation**
 2. 🔺 **Trigonometry & Circle Constants**
 3. 📈 **Exponentials, Logarithms & Euler's Numbers**
 4. 🌀 **Golden Ratio & Fibonacci Numbers**
+5. 🧩 **Complex Numbers**
 
 ---
 
@@ -79,6 +80,36 @@ Functions derived from or related to the golden ratio.
 
 ---
 
+## 5. 🧩 Complex Numbers
+
+Custom complex number class with additional features. All pythonic operators have been implemented (*with the exception of mod*)
+Complex numbers support certain functions already predefined in `functions.py`.
+Additionally, complex numbers can be vectorized, allowing for vector manipulation.
+Additionally, complex numbers are now iterable. Let z a complex number, z[0] is Re(z) and z[1] is Im(z).
+
+The following list is inexhaustive. Check the source code for the full documentation.
+
+| Name                  | Method     | Description                                                 |
+|-----------------------|------------|-------------------------------------------------------------|
+| `display_cartesian`   | `default`  | Returns the complex number in Cartesian form *(a + bi)*.    |
+| `display_exponential` | `default`  | Returns the complex number in exponential form *(r·e^(iθ))*.|
+| `display_polar`       | `default`  | Returns the complex number in polar form *(r·cis(θ))*.      |
+| `Re`                  | `default`  | Returns the real part *(Re)* of the complex number.         |
+| `Im`                  | `default`  | Returns the imaginary part *(Im)* of the complex number.    |
+| `conj`                | `default`  | Returns the complex conjugate *(a − bi)*.                   |
+| `__abs__`             | `dunder`   | Returns the modulus r (length) of the complex number.       |
+| `arg`                 | `default`  | Returns the argument θ (angle) of the complex number.       |
+| `is_gaussian`         | `default`  | Returns `True` if the complex is a Gaussian integer.        |
+| `is_eisenstein`       | `default`  | Returns `True` if the complex is an Eisenstein integer.     |
+
+| `dot`                 | `default`  | Returns the dot product of two vectorized complex numbers.  |
+| `cross`               | `default`  | Returns the cross product of two vectorized complex numbers.|
+| `is_orthogonal`       | `default`  | Checks if two vectorized complex numbers are orthogonal.    |
+| `is_collinear`        | `default`  | Checks if two vectorized complex numbers are collinear      |
+| `normalize`           | `default`  | Returns the unit vector form of the complex number.         |
+
+---
+
 ## 🧠 Architecture
 
 All fundamental functions and constants are stored in two registries, each with multiple generation methods:
@@ -95,6 +126,15 @@ print(functions.available())
 You can call a function using:
 ```
 functions.get(name="NAME", method_name="METHOD NAME")("ARGUMENTS")
+```
+
+The complex number class is situated in:
+
+- `complex`
+
+You can view all available non-dunder entries using:
+```
+print([func for func in dir(complex) if callable(getattr(complex, func)) and not func.startswith("__")])
 ```
 
 ## ⚖️ License
