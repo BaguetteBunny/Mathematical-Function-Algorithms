@@ -1,15 +1,37 @@
 from functions import *
 
 class complex():
-    def __init__(self, real = 0.0, imaginary = 0.0):
-        '''
-        Initiate complex number by attributing a Real part and Imaginary part.
-        '''
-
-        self.__real = real
-        self.__imaginary = imaginary
+    def __init__(self, real=None, imaginary=None, modulus=None, arg=None):
+        """
+        Initialize a complex number.
         
+        You can either:
+        - Pass real & imaginary parts (Cartesian form), OR
+        - Pass modulus & arg (Polar form, in radians)
+
+        Examples:
+            complex(real=3, imaginary=4)
+            complex(modulus=5, arg=0.927295218)
+        """
         self.__pi = chudnovsky_pi()
+        if real is not None or imaginary is not None:
+            self.__real = float(real) if real is not None else 0.0
+            self.__imaginary = float(imaginary) if imaginary is not None else 0.0
+
+        elif modulus is not None:
+            if modulus < 0:
+                raise ValueError("Modulus cannot be negative.")
+            
+            if arg is not None:
+                self.__real = modulus * cos(arg)
+                self.__imaginary = modulus * sin(arg)
+
+        elif modulus is None and arg is None and real is None and imaginary is None:
+            self.__real = 0.0
+            self.__imaginary = 0.0
+
+        else:
+            raise ValueError("Must provide either real/imaginary OR modulus/arg")
     
     def display_cartesian(self):
         '''
@@ -458,9 +480,3 @@ class complex():
         Checks if two vectorized complex numbers are collinear.
         '''
         return self.cross(z) == 0
-
-a = complex(real = 4, imaginary = 3)
-b = complex(real = -0.5, imaginary = -6.5)
-i = complex(real = 0, imaginary = 1)
-c = complex(real = 1, imaginary = 0)
-empty = complex()

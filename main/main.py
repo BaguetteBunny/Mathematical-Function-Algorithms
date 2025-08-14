@@ -21,12 +21,14 @@ graph(FUNCTIONS.get(name="sin"), math.sin, step=0.001)
 graph(FUNCTIONS.get(name="exp"), math.exp, step=0.001)
 """
 
-"""
 print([func for func in dir(complex) if callable(getattr(complex, func)) and not func.startswith("__")])
 
+"""
 a = complex(real = 4, imaginary = 3)
 b = complex(real = -0.5, imaginary = -6.5)
 i = complex(real = 0, imaginary = 1)
 c = complex(real = 1, imaginary = 0)
+polar = complex(modulus = 1, arg = 0.6767)
 empty = complex()
+print(i, c, a+b, polar, empty, a**2)
 """
