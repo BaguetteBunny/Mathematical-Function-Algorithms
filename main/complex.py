@@ -15,7 +15,12 @@ class complex():
         '''
         Displays complex number in cartesian form
         '''
-        return self.__str__()
+        if self.__imaginary >=0 :
+            new_imaginary = f" + {self.__imaginary}i"
+        else:
+            new_imaginary = f" - {str(self.__imaginary)[1:]}i"
+        
+        return f"{self.__real}{new_imaginary}" 
     
     def display_exponential(self):
         '''
