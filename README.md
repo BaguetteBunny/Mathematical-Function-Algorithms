@@ -104,6 +104,7 @@ The following list is inexhaustive. Check the source code for the full documenta
 
 | `dot`                 | `default`  | Returns the dot product of two vectorized complex numbers.  |
 | `cross`               | `default`  | Returns the cross product of two vectorized complex numbers.|
+| `scalar_triple`       | `default`  | Returns the scalar triple of two vectorized complex numbers.|
 | `is_orthogonal`       | `default`  | Checks if two vectorized complex numbers are orthogonal.    |
 | `is_collinear`        | `default`  | Checks if two vectorized complex numbers are collinear      |
 | `normalize`           | `default`  | Returns the unit vector form of the complex number.         |

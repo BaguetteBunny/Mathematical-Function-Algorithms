@@ -468,6 +468,17 @@ class complex():
         
         else:
             raise TypeError(f"unsupported operand type(s) for cross(): 'complex' and '{type(z)}'")
+        
+    def scalar_triple(self, v, w):
+        '''
+        Returns the scalar triple product of three vectorized complex numbers.
+        '''
+        if isinstance(v, complex):
+            return self.dot(v.cross(w))
+        elif isinstance(w, complex):
+            return w.dot(self.cross(v))
+        else:
+            raise TypeError(f"unsupported operand type(s) for scalar_triple(): 'complex' and '{type(v)}' and '{type(w)}'")
 
     def is_orthogonal(self, z):
         '''
