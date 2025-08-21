@@ -53,14 +53,17 @@ class complex():
         
         return f"{modulus} * e^(i * {argument})"
     
-    def display_polar(self):
+    def display_polar(self, cis = True):
         '''
         Displays complex number in polar form
         '''
         modulus = self.__abs__()
         argument = self.arg()
-        
-        return f"{modulus} * cis({argument})"
+
+        if cis:
+            return f"{modulus} * cis({argument})"
+        else:
+            return f"{modulus}(cos({argument}) + isin({argument}))"
 
     def Re(self):
         '''
