@@ -109,6 +109,8 @@ The following list is inexhaustive. Check the source code for the full documenta
 | `is_collinear`        | `default`  | Checks if two vectorized complex numbers are collinear      |
 | `normalize`           | `default`  | Returns the unit vector form of the complex number.         |
 
+| `matrix`              | `default`  | Returns the matrix representation of a complex number.      |
+
 ---
 
 ## 🧠 Architecture

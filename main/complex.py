@@ -489,3 +489,6 @@ class complex():
         Checks if two vectorized complex numbers are collinear.
         '''
         return self.cross(z) == 0
+    
+    def matrix(self):
+        return [[self.Re(), -self.Im()] , [self.Im(), self.Re()]]
