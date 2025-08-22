@@ -416,12 +416,7 @@ class complex():
         return real_part + imaginary_part
 
     def __str__(self):
-        if self.__imaginary >=0 :
-            new_imaginary = f" + {self.__imaginary}i"
-        else:
-            new_imaginary = f" - {str(self.__imaginary)[1:]}i"
-        
-        return f"{self.__real}{new_imaginary}" 
+        return self.display_cartesian() 
 
     def __bool__(self):
         if self.Re() and self.Im():
