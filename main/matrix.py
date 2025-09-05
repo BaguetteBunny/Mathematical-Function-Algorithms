@@ -11,6 +11,9 @@ class matrix():
         for row in self.matrix:
             yield row
 
+    def __len__(self):
+        return [self.row_length, self.col_length]
+    
     def __neg__(self):
         return matrix([[-col for col in row] for row in self.matrix])
 
