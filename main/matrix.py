@@ -13,10 +13,11 @@ class matrix():
 
     def __eq__(self, other: 'matrix'):
         self.__check_other_type_at_operation(other, '==')
-        
+        self.__check_other_equal_row_col(other)
+
         for index, row in enumerate(other):
-            if self.matrix[index] == row: continue
-            else: return False
+            if self.matrix[index] != row: 
+                return False
 
         return True
     
