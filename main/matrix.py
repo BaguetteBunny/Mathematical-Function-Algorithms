@@ -18,7 +18,6 @@ class matrix():
         for index, row in enumerate(other):
             if self.matrix[index] != row: 
                 return False
-
         return True
     
     def __add__(self, other: 'matrix'):
@@ -27,6 +26,12 @@ class matrix():
 
         return matrix([[a + b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(self, other)])
     
+    def __sub__(self, other: 'matrix'):
+        self.__check_other_type_at_operation(other, '-')
+        self.__check_other_equal_row_col(other)
+
+        return matrix([[a - b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(self, other)])
+
     def __repr__(self):
         final_string = ""
         for row in self.matrix:
@@ -56,4 +61,7 @@ class matrix():
 
 A = matrix([[1, 2, 3], [4, 5, 6]])
 B = matrix([[1, 2, 3], [4, 5, 6]])
+
+print(A == B)
 print(A + B)
+print(A - B)
