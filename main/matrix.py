@@ -11,7 +11,7 @@ class matrix():
         assert isinstance(other, matrix)
         for index, row in enumerate(other):
             if self.matrix[index] == row: continue
-            else:return False
+            else: return False
 
         return True
     
