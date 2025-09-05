@@ -14,6 +14,15 @@ class matrix():
     def __len__(self):
         return [self.row_length, self.col_length]
     
+    def __contains__(self, other):
+        if not isinstance(other, matrix):
+            for row in self.matrix:
+                for col in row:
+                    if other == col:
+                        return True
+            
+        return False
+
     def __neg__(self):
         return matrix([[-col for col in row] for row in self.matrix])
 
