@@ -7,13 +7,17 @@ class matrix():
         for row in self.matrix:
             assert len(row) == self.row_length
 
-    def __eq__(self, other_matrix):
-        assert isinstance(other_matrix, matrix)
-        for index, row in enumerate(other_matrix.matrix):
+    def __eq__(self, other):
+        assert isinstance(other, matrix)
+        for index, row in enumerate(other):
             if self.matrix[index] == row: continue
             else:return False
 
         return True
+    
+    def __iter__(self):
+        for row in self.matrix:
+            yield row
 
     def __repr__(self):
         final_string = ""
