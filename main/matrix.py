@@ -12,7 +12,6 @@ class matrix():
             yield row
 
     def __eq__(self, other: 'matrix'):
-        self.__check_other_type_at_operation(other, '==')
         self.__check_other_equal_row_col(other)
 
         for index, row in enumerate(other):
@@ -21,16 +20,26 @@ class matrix():
         return True
     
     def __add__(self, other: 'matrix'):
-        self.__check_other_type_at_operation(other, '+')
-        self.__check_other_equal_row_col(other)
-
-        return matrix([[a + b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(self, other)])
+        if isinstance(other, matrix):
+            self.__check_other_equal_row_col(other)
+            return matrix([[a + b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(self, other)])
+        
+        elif isinstance(other, (int, float)):
+            return matrix([[col + other for col in row] for row in self.matrix])
+        
+        else:
+            raise TypeError(f"Unsupported operand type(s) for +: 'matrix' and '{type(other)}'.")
     
     def __sub__(self, other: 'matrix'):
-        self.__check_other_type_at_operation(other, '-')
-        self.__check_other_equal_row_col(other)
-
-        return matrix([[a - b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(self, other)])
+        if isinstance(other, matrix):
+            self.__check_other_equal_row_col(other)
+            return matrix([[a - b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(self, other)])
+        
+        elif isinstance(other, (int, float)):
+            return matrix([[col - other for col in row] for row in self.matrix])
+        
+        else:
+            raise TypeError(f"Unsupported operand type(s) for -: 'matrix' and '{type(other)}'.")
 
     def __repr__(self):
         final_string = ""
@@ -38,13 +47,7 @@ class matrix():
             final_string += f"{row}\n"
 
         return final_string
-    
-    def __check_other_type_at_operation(self, other: 'matrix', operator: str):
-        try:
-            assert isinstance(other, matrix)
-        except:
-            raise TypeError(f"Unsupported operand type(s) for {operator}: 'matrix' and '{type(other)}'")
-        
+     
     def __check_other_equal_row_col(self, other: 'matrix', check_row: bool = True, check_col: bool = True):
         if check_row:
             try:
@@ -65,3 +68,5 @@ B = matrix([[1, 2, 3], [4, 5, 6]])
 print(A == B)
 print(A + B)
 print(A - B)
+print(A - 5)
+print(5 - A)
