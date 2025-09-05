@@ -13,6 +13,7 @@ class matrix():
 
     def __eq__(self, other: 'matrix'):
         self.__check_other_type_at_operation(other, '==')
+        
         for index, row in enumerate(other):
             if self.matrix[index] == row: continue
             else: return False
@@ -23,13 +24,7 @@ class matrix():
         self.__check_other_type_at_operation(other, '+')
         self.__check_other_equal_row_col(other)
 
-        new_matrix_list = []
-        for row_index, row in enumerate(other):
-            new_matrix_row_list = []
-            for col_index, col in enumerate(row):
-                new_matrix_row_list.append(self.matrix[row_index][col_index] + col)
-            new_matrix_list.append(new_matrix_row_list)
-        return matrix(new_matrix_list)
+        return matrix([[a + b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(self, other)])
     
     def __repr__(self):
         final_string = ""
