@@ -7,12 +7,22 @@ class matrix():
         for row in self.matrix:
             assert len(row) == self.row_length
 
+    def __eq__(self, other_matrix):
+        assert isinstance(other_matrix, matrix)
+        for index, row in enumerate(other_matrix.matrix):
+            if self.matrix[index] == row: continue
+            else:return False
+
+        return True
+
     def __repr__(self):
         final_string = ""
         for row in self.matrix:
             final_string += f"{row}\n"
+
         return final_string
 
 
-a = matrix([[1, 2, 3], [4, 5, 6]])
-print(a)
+A = matrix([[1, 2, 3], [4, 5, 6]])
+B = matrix([[1, 2, 3], [4, 5, 6]])
+print(A == B)
