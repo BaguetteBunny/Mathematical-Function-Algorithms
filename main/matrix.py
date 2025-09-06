@@ -7,6 +7,9 @@ class matrix():
         for row in self.matrix:
             assert len(row) == self.row_length
 
+    def transpose(self):
+        return matrix([list(col) for col in zip(*self)])
+
     def __iter__(self):
         for row in self.matrix:
             yield row
@@ -49,7 +52,7 @@ class matrix():
         
     def __radd__(self, other) -> 'matrix':
         return self.__add__(other)
-    
+
     def __sub__(self, other) -> 'matrix':
         if isinstance(other, matrix):
             self.__check_other_equal_row_col(other)
@@ -78,7 +81,25 @@ class matrix():
             return other.__matmul__(self)
         
         raise TypeError(f"Unsupported operand type(s) for @: 'matrix' and '{type(other)}'.")
+
+    def __mul__(self, other):
+        if isinstance(other, matrix):
+            return self.__matmul__(other)
         
+        elif isinstance(other, (int, float)):
+            return matrix([[col * other for col in row] for row in self.matrix])
+        
+        raise TypeError(f"Unsupported operand type(s) for *: 'matrix' and '{type(other)}'.")
+    
+    def __rmul__(self, other):
+        if isinstance(other, matrix):
+            return self.__rmatmul__(other)
+        
+        elif isinstance(other, (int, float)):
+            return matrix([[col * other for col in row] for row in self.matrix])
+        
+        raise TypeError(f"Unsupported operand type(s) for *: 'matrix' and '{type(other)}'.")
+
     def __repr__(self) -> str:
         final_string = ""
         for row in self.matrix:
@@ -117,3 +138,4 @@ print(A - 3)
 print(3 - A)
 print(abs(A))
 print(A @ C)
+print(C * A)
