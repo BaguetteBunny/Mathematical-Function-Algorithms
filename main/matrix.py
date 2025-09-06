@@ -22,6 +22,9 @@ class matrix():
                         return True
             
         return False
+    
+    def __abs__(self):
+        return matrix([[abs(col) for col in row] for row in self.matrix])
 
     def __neg__(self):
         return matrix([[-col for col in row] for row in self.matrix])
@@ -86,10 +89,11 @@ class matrix():
                 raise ValueError("Matrices must have the same column length.")
 
 
-A = matrix([[1, 2, 3], [4, 5, 6]])
-B = matrix([[1, 2, 3], [4, 5, 6]])
+A = matrix([[-1, 2, 3], [4, 5, 6]])
+B = matrix([[-1, 2, 3], [4, 5, 6]])
 
 print(A == B)
 print(A + B)
 print(A - 3)
 print(3 - A)
+print(abs(A))
