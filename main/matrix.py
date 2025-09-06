@@ -68,13 +68,25 @@ class matrix():
         else:
             raise TypeError(f"Unsupported operand type(s) for -: 'matrix' and '{type(other)}'.")
 
+    def __matmul__(self, other):
+        if isinstance(other, matrix):
+            self.__check_matmultiplicable(other)
+            return matrix([[sum(a * b for a, b in zip(row_a, col_b)) for col_b in zip(*other)] for row_a in self.matrix])
+        raise TypeError(f"Unsupported operand type(s) for @: 'matrix' and '{type(other)}'.")
+        
+    def __rmatmul__(self, other):
+        if isinstance(other, matrix):
+            return other.__matmul__(self)
+        raise TypeError(f"Unsupported operand type(s) for @: 'matrix' and '{type(other)}'.")
+        
+
     def __repr__(self):
         final_string = ""
         for row in self.matrix:
             final_string += f"{row}\n"
 
         return final_string
-     
+
     def __check_other_equal_row_col(self, other: 'matrix', check_row: bool = True, check_col: bool = True):
         if check_row:
             try:
@@ -88,12 +100,21 @@ class matrix():
             except:
                 raise ValueError("Matrices must have the same column length.")
 
+    def __check_matmultiplicable(self, other: 'matrix'):
+        try:
+            assert self.col_length == other.row_length
+        except:
+            raise ValueError("Matrices must have the same row length.")
+
+
 
 A = matrix([[-1, 2, 3], [4, 5, 6]])
 B = matrix([[-1, 2, 3], [4, 5, 6]])
+C = matrix([[-1, 2], [4, 5], [4, 5]])
 
 print(A == B)
 print(A + B)
 print(A - 3)
 print(3 - A)
 print(abs(A))
+print(A @ C)
