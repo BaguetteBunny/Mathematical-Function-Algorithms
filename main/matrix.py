@@ -126,11 +126,16 @@ class matrix():
         except:
             raise ValueError("Matrices must have the same row length.")
 
-
+class zero_matrix(matrix):
+    def __init__(self, rows: int, cols: int):
+        matrix_list = [[0]*cols]*rows
+        super().__init__(matrix_list = matrix_list)
 
 A = matrix([[-1, 2, 3], [4, 5, 6]])
 B = matrix([[-1, 2, 3], [4, 5, 6]])
 C = matrix([[-1, 2], [4, 5], [4, 5]])
+
+Z = zero_matrix(2, 1)
 
 print(A == B)
 print(A + B)
@@ -139,3 +144,5 @@ print(3 - A)
 print(abs(A))
 print(A @ C)
 print(C * A)
+print(A.transpose())
+print(Z)
