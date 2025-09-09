@@ -101,11 +101,10 @@ class matrix():
         raise TypeError(f"Unsupported operand type(s) for *: 'matrix' and '{type(other)}'.")
 
     def __repr__(self) -> str:
-        final_string = ""
-        for row in self.matrix:
-            final_string += f"{row}\n"
-
-        return final_string
+        return self
+    
+    def __str__(self) -> str:
+        return str(self.matrix)
 
     def __check_other_equal_row_col(self, other: 'matrix', check_row: bool = True, check_col: bool = True) -> None:
         if check_row:
@@ -143,7 +142,7 @@ B = matrix([[-1, 2, 3], [4, 5, 6]])
 C = matrix([[-1, 2], [4, 5], [4, 5]])
 
 Z = zero_matrix(2, 1)
-I = identity_matrix(5)
+I = identity_matrix(2)
 
 print(A == B)
 print(A + B)
@@ -155,3 +154,5 @@ print(C * A)
 print(A.transpose())
 print(Z)
 print(I)
+print(A * I)
+print()
