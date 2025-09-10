@@ -1,4 +1,5 @@
 from functions import *
+from matrix import *
 
 class complex():
     def __init__(self, real=None, imaginary=None, modulus=None, arg=None):
@@ -532,4 +533,4 @@ class complex():
         return self.cross(z) == 0
     
     def matrix(self):
-        return [[self.Re(), -self.Im()] , [self.Im(), self.Re()]]
+        return matrix([[self.Re(), -self.Im()] , [self.Im(), self.Re()]])
