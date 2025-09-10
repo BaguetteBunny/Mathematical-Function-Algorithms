@@ -378,12 +378,47 @@ class complex():
         
         elif isinstance(z, (int,float)):
             return self.Re() == z and not self.Im()
+        
+        else:
+            raise TypeError(f"unsupported operand type(s) for ==: 'complex' and '{type(z)}'")
     
     def __ne__(self, z):
         '''
         Checks if two complex numbers are not equal
         '''
         return not self.__eq__(z)
+
+    def __lt__(self, z):
+        '''
+        Check if self is strictly less than z
+        '''
+        if isinstance(z, complex):
+            return self.__abs__() < z.__abs__()
+        
+        elif isinstance(z, (int,float)):
+            return self.__abs__() < z
+        
+        else:
+            raise TypeError(f"unsupported operand type(s) for comparisons: 'complex' and '{type(z)}'")
+
+    def __le__(self, z):
+        return not self.__gt__(z)
+
+    def __gt__(self, z):
+        '''
+        Check if self is strictly more than z
+        '''
+        if isinstance(z, complex):
+            return self.__abs__() > z.__abs__()
+        
+        elif isinstance(z, (int,float)):
+            return self.__abs__() > z
+        
+        else:
+            raise TypeError(f"unsupported operand type(s) for comparisons: 'complex' and '{type(z)}'")
+
+    def __ge__(self, z):
+        return not self.__lt__(z)
 
     def __neg__(self):
         '''
