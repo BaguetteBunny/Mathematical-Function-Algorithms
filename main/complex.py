@@ -385,6 +385,12 @@ class complex():
         '''
         return not self.__eq__(z)
 
+    def __neg__(self):
+        '''
+        Returns the negative value of the complex number
+        '''
+        return complex(real = -self.Re(), imaginary = -self.Im())
+
     def e(self):
         '''
         Returns the e^z
