@@ -13,13 +13,47 @@ class matrix():
     def transpose(self):
         return matrix([list(col) for col in zip(*self)])
 
+    def minor(self, pos: tuple[int, int]):
+        x, y = pos
+        submatrix = []
+
+        for row_idx, row in enumerate(self.matrix):
+            if row_idx == x:
+                continue
+
+            new_row = []
+            for col_idx, elem in enumerate(row):
+                if col_idx == y:
+                    continue
+                new_row.append(elem)
+
+            submatrix.append(new_row)
+
+        return matrix(submatrix)
+
+    def cofactor(self, pos: tuple[int, int]):
+        return (-1)**(pos[0] + pos[1]) * self.minor(pos).det()
+    
+    def det(self):
+        self.__check_square()
+        if self.row_length == 1:
+            return self.matrix[0][0]
+
+        if self.row_length == 2:
+            return self.matrix[0][0] * self.matrix[1][1] - self.matrix[0][1] * self.matrix[1][0]
+        
+        total = 0
+        for idx, element in enumerate(self.matrix[0]):
+            total += element * self.cofactor((0, idx))
+        return total
+
     def __iter__(self):
         for row in self.matrix:
             yield row
 
     def __len__(self) -> list:
         return [self.row_length, self.col_length]
-    
+
     def __contains__(self, other) -> bool:
         if not isinstance(other, matrix):
             for row in self.matrix:
@@ -128,6 +162,12 @@ class matrix():
         except:
             raise ValueError("Matrices must have the same row length.")
 
+    def __check_square(self) -> None:
+        try:
+            assert self.col_length == self.row_length
+        except:
+            raise ValueError("Matrix must be a square matrix.")    
+
 class zero_matrix(matrix):
     def __init__(self, rows: int, cols: int):
         matrix_list = [[0] * cols for _ in range(rows)]
@@ -164,3 +204,5 @@ print(A)
 print(B)
 print(A*B)
 print(A*I)
+A = matrix([[777, 81, 25], [7, 9, -97], [74, 4, -4]])
+print(A.det())
