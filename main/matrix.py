@@ -1,11 +1,14 @@
 class matrix():
     def __init__(self, matrix_list: list[list]) -> None:
         self.matrix = matrix_list
-        self.row_length = len(self.matrix[0])
-        self.col_length = len(self.matrix)
-
+        self.row_length = len(self.matrix)
+        self.col_length = len(self.matrix[0])
+        
         for row in self.matrix:
-            assert len(row) == self.row_length
+            try:
+                assert len(row) == self.col_length
+            except:
+                ValueError("All rows must have the same number of columns.")
 
     def transpose(self):
         return matrix([list(col) for col in zip(*self)])
@@ -154,5 +157,10 @@ print(C * A)
 print(A.transpose())
 print(Z)
 print(I)
-print(A * I)
-print()
+A = matrix([[7, 8], [7, 9]])
+B = matrix([[1, 1, 1], [0, 1, -1]])
+
+print(A)
+print(B)
+print(A*B)
+print(A*I)
