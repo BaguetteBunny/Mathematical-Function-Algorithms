@@ -13,6 +13,10 @@ class matrix():
     def transpose(self):
         return matrix([list(col) for col in zip(*self)])
 
+    def inverse(self):
+        self.__check_non_null_det()
+        return (1/self.det()) * self.adj()
+
     def minor(self, pos: tuple[int, int]):
         x, y = pos
         submatrix = []
@@ -46,6 +50,19 @@ class matrix():
         for idx, element in enumerate(self.matrix[0]):
             total += element * self.cofactor((0, idx))
         return total
+
+    def adj(self):
+        cofactor_matrix = []
+        for i, row in enumerate(self.matrix):
+            new_row = []
+            for j, col in enumerate(row):
+                new_row.append(self.cofactor((i, j)))
+            cofactor_matrix.append(new_row)
+
+        return matrix(cofactor_matrix).transpose()
+
+    def is_invertible(self):
+        return self.det() != 0
 
     def __iter__(self):
         for row in self.matrix:
@@ -168,6 +185,12 @@ class matrix():
         except:
             raise ValueError("Matrix must be a square matrix.")    
 
+    def __check_non_null_det(self) -> None:
+        try:
+            assert self.det()
+        except:
+            raise ValueError("Determinant must not be null.")       
+
 class zero_matrix(matrix):
     def __init__(self, rows: int, cols: int):
         matrix_list = [[0] * cols for _ in range(rows)]
@@ -204,5 +227,7 @@ print(A)
 print(B)
 print(A*B)
 print(A*I)
-A = matrix([[777, 81, 25], [7, 9, -97], [74, 4, -4]])
+
 print(A.det())
+print(A.adj())
+print(A.inverse())
