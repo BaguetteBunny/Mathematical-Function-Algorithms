@@ -154,6 +154,23 @@ class matrix():
         
         raise TypeError(f"Unsupported operand type(s) for *: 'matrix' and '{type(other)}'.")
 
+    def __truediv__(self, other):
+        if isinstance(other, matrix):
+            self.__check_square()
+            self.__check_other_equal_row_col(other)
+            return self @ other.inverse()
+        
+        elif isinstance(other, (int, float)):
+            return matrix([[col / other for col in row] for row in self.matrix])
+        
+        raise TypeError(f"Unsupported operand type(s) for *: 'matrix' and '{type(other)}'.")
+    
+    def __rtruediv__(self, other):
+        if isinstance(other, (int, float)):
+            return matrix([[other / col for col in row] for row in self.matrix])
+        
+        raise TypeError(f"Unsupported operand type(s) for *: 'matrix' and '{type(other)}'.")
+
     def __repr__(self) -> str:
         return self
     
@@ -220,14 +237,21 @@ print(C * A)
 print(A.transpose())
 print(Z)
 print(I)
-A = matrix([[7, 8], [7, 9]])
-B = matrix([[1, 1, 1], [0, 1, -1]])
 
-print(A)
-print(B)
-print(A*B)
-print(A*I)
+X = matrix([[7, 8], [7, 9]])
+Y = matrix([[4, 47], [2, -9]])
+Z = matrix([[1, 1, 1], [0, 1, -1]])
 
-print(A.det())
-print(A.adj())
-print(A.inverse())
+print(X)
+print(Z)
+print(X*Z)
+print(X*I)
+
+print(X.det())
+print(X.adj())
+print(X.inverse())
+
+print(Y/X)
+print(5/X)
+print(X/5)
+
