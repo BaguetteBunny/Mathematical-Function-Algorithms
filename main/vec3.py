@@ -54,6 +54,12 @@ class Vec3:
                 return False
         return True
 
+    def __pos__(self):
+        return self
+
+    def __neg__(self):
+        return Vec3(-self.x, -self.y, -self.z)
+
     def __eq__(self, other):
         if isinstance(other, Vec3):
             return self.x == other.x and self.y == other.y and self.z == other.z
@@ -167,7 +173,7 @@ assert 2/a == Vec3(0.4, 0.2, 2/15)
 assert a*b == b*a == -210
 
 # Cross Product
-assert a.cross(b) == 0-b.cross(a) == Vec3(-25, 20, -5)
+assert a.cross(b) == -b.cross(a) == Vec3(-25, 20, -5)
 
 # Norm
 assert a.norm() == abs(a) == 350 ** 0.5
