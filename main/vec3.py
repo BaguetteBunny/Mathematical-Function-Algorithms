@@ -117,6 +117,12 @@ class Vec3:
             return Vec3(self.x * other.x, self.y * other.y, self.z * other.z)
         return NotImplemented
 
+    def __float__(self):
+        return Vec3(float(self.x), float(self.y), float(self.z))
+    
+    def __int__(self):
+        return Vec3(int(self.x), int(self.y), int(self.z))
+
     def __str__(self):
         return f"({self.x} ; {self.y} ; {self.z})"
     
