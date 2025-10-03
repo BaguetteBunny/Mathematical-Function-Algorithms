@@ -5,6 +5,9 @@ class Vec3:
         self.z = z
         self.vector = (x, y, z)
 
+        self.NULL = self.__isNullVector()
+        self.NUMERICAL = self.__isNumericalVector()
+
     def check_validity(self):
         try:
             a = Vec3(5, 10, 15)
@@ -46,13 +49,10 @@ class Vec3:
         return self.x == self.y == self.z == 0
         
     def __isNumericalVector(self):
-        if self.__isNullVector():
-            return False
-            
         for n in self.vector:
             if not isinstance(n, (float, int)):
                 return False
-        return True
+        return self.x == self.y == self.z == 0
 
     def __pos__(self):
         return self
@@ -115,9 +115,6 @@ class Vec3:
     def __matmul__(self, other):
         if isinstance(other, Vec3):
             return Vec3(self.x * other.x, self.y * other.y, self.z * other.z)
-        return NotImplemented
-    
-    def __rmatmul__(self, other):
         return NotImplemented
 
     def __str__(self):
