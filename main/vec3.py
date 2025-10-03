@@ -113,7 +113,7 @@ class Vec3:
         return NotImplemented
     
     def __matmul__(self, other):
-        if isinstance(other, 'Vec3'):
+        if isinstance(other, Vec3):
             return Vec3(self.x * other.x, self.y * other.y, self.z * other.z)
         return NotImplemented
     
@@ -162,12 +162,15 @@ assert a-1 == Vec3(4, 9, 14)
 assert a-b == Vec3(7, 15, 25)
 assert b-a == Vec3(-7, -15, -25)
 
-# Scalar Multiplication
+# Scalar Product
 assert a*2 == 2*a == Vec3(10, 20, 30)
 
-# Scalar Division
+# Scalar Quotient
 assert a/2 == Vec3(2.5, 5, 7.5)
 assert 2/a == Vec3(0.4, 0.2, 2/15)
+
+# Entrywise Product
+assert a @ b == b @ a == Vec3(-10, -50, -150)
 
 # Dot Product
 assert a*b == b*a == -210
