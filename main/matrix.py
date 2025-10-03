@@ -14,7 +14,7 @@ class matrix():
         return matrix([list(col) for col in zip(*self)])
 
     def inverse(self):
-        self.__check_non_null_det()
+        self.__isNonNullDet()
         return (1/self.det()) * self.adj()
 
     def minor(self, pos: tuple[int, int]):
@@ -39,7 +39,7 @@ class matrix():
         return (-1)**(pos[0] + pos[1]) * self.minor(pos).det()
     
     def det(self):
-        self.__check_square()
+        self.__isSquare()
         if self.row_length == 1:
             return self.matrix[0][0]
 
@@ -85,9 +85,12 @@ class matrix():
 
     def __neg__(self) -> 'matrix':
         return matrix([[-col for col in row] for row in self.matrix])
+    
+    def __pos__(self) -> 'matrix':
+        return self
 
     def __eq__(self, other: 'matrix') -> bool:
-        self.__check_other_equal_row_col(other)
+        self.__otherEqualRowCol(other)
 
         for index, row in enumerate(other):
             if self.matrix[index] != row: 
@@ -96,7 +99,7 @@ class matrix():
 
     def __add__(self, other) -> 'matrix':
         if isinstance(other, matrix):
-            self.__check_other_equal_row_col(other)
+            self.__otherEqualRowCol(other)
             return matrix([[a + b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(self, other)])
         
         elif isinstance(other, (int, float)):
@@ -109,7 +112,7 @@ class matrix():
 
     def __sub__(self, other) -> 'matrix':
         if isinstance(other, matrix):
-            self.__check_other_equal_row_col(other)
+            self.__otherEqualRowCol(other)
             return matrix([[a - b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(self, other)])
         
         elif isinstance(other, (int, float)):
@@ -125,7 +128,7 @@ class matrix():
 
     def __matmul__(self, other: 'matrix') -> 'matrix':
         if isinstance(other, matrix):
-            self.__check_matmultiplicable(other)
+            self.__isMatMultiplicable(other)
             return matrix([[sum(a * b for a, b in zip(row_a, col_b)) for col_b in zip(*other)] for row_a in self.matrix])
         
         raise TypeError(f"Unsupported operand type(s) for @: 'matrix' and '{type(other)}'.")
@@ -156,8 +159,8 @@ class matrix():
 
     def __truediv__(self, other):
         if isinstance(other, matrix):
-            self.__check_square()
-            self.__check_other_equal_row_col(other)
+            self.__isSquare
+            self.__otherEqualRowCol(other)
             return self @ other.inverse()
         
         elif isinstance(other, (int, float)):
@@ -177,7 +180,7 @@ class matrix():
     def __str__(self) -> str:
         return str(self.matrix)
 
-    def __check_other_equal_row_col(self, other: 'matrix', check_row: bool = True, check_col: bool = True) -> None:
+    def __otherEqualRowCol(self, other: 'matrix', check_row: bool = True, check_col: bool = True) -> None:
         if check_row:
             try:
                 assert self.row_length == other.row_length
@@ -190,19 +193,19 @@ class matrix():
             except:
                 raise ValueError("Matrices must have the same column length.")
 
-    def __check_matmultiplicable(self, other: 'matrix') -> None:
+    def __isMatMultiplicable(self, other: 'matrix') -> None:
         try:
             assert self.col_length == other.row_length
         except:
             raise ValueError("Matrices must have the same row length.")
 
-    def __check_square(self) -> None:
+    def __isSquare(self) -> None:
         try:
             assert self.col_length == self.row_length
         except:
             raise ValueError("Matrix must be a square matrix.")    
 
-    def __check_non_null_det(self) -> None:
+    def __isNonNullDet(self) -> None:
         try:
             assert self.det()
         except:
