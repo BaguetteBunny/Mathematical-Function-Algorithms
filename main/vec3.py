@@ -136,7 +136,7 @@ class Vec3:
         norm = self.norm()
         return Vec3(self.x / norm, self.y / norm, self.z / norm)
     
-    def cross(self, other: 'Vec3', theta: int | float = 3.141592653589793238, degree: bool = False):
+    def cross(self, other: 'Vec3'):
         if isinstance(other, Vec3):
             return Vec3(
                 self.y*other.z - self.z*other.y,
@@ -145,12 +145,17 @@ class Vec3:
             )
         return NotImplemented
 
+    def triple(self, v: 'Vec3', w: 'Vec3'):
+        if isinstance(v, Vec3) and isinstance(w, Vec3):
+            return self * v.cross(w)
 
 a = Vec3(5, 10, 15)
 b = Vec3(-2, -5, -10)
+c = Vec3(-1.5, 60, 0)
 
 # Basic
-assert a == Vec3(5, 10, 15)
+assert 0+a == +a == a == Vec3(5, 10, 15)
+assert 0-a == -a
 
 # Sum
 assert 1+a == a+1 == Vec3(6, 11, 16)
@@ -177,6 +182,9 @@ assert a*b == b*a == -210
 
 # Cross Product
 assert a.cross(b) == -b.cross(a) == Vec3(-25, 20, -5)
+
+# Scalar Triple
+assert a.triple(b, c) == b.triple(c, a) == c.triple(a, b) == -a.triple(c, b) == 1237.5
 
 # Norm
 assert a.norm() == abs(a) == 350 ** 0.5
