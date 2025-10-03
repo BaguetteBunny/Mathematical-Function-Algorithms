@@ -5,6 +5,43 @@ class Vec3():
         self.z = z
         self.vector = (x, y, z)
 
+    def check_validity(self):
+        try:
+            a = Vec3(5, 10, 15)
+            b = Vec3(-2, -5, -10)
+
+            # Basic
+            assert a == Vec3(5, 10, 15)
+
+            # Sum
+            assert 1+a == a+1 == Vec3(6, 11, 16)
+            assert a+b == b+a == Vec3(3, 5, 5)
+
+            # Difference
+            assert 1-a == Vec3(-4, -9, -14)
+            assert a-1 == Vec3(4, 9, 14)
+            assert a-b == Vec3(7, 15, 25)
+            assert b-a == Vec3(-7, -15, -25)
+
+            # Scalar Multiplication
+            assert a*2 == 2*a == Vec3(10, 20, 30)
+
+            # Scalar Division
+            assert a/2 == Vec3(2.5, 5, 7.5)
+            assert 2/a == Vec3(0.4, 0.2, 2/15)
+
+            # Dot Product
+            assert a*b == b*a == -210
+
+            # Norm
+            assert a.norm() == abs(a) == 350 ** 0.5
+
+            # Normalize
+            assert a.normalize() == Vec3(5/abs(a), 10/abs(a), 15/abs(a))
+
+        except: raise ValueError("Error with Vec3 class. Please report this ASAP!")
+        else: print("All vector modules are functioning properly.")
+
     def __isNullVector(self):
         return self.x == self.y == self.z == 0
         
@@ -16,7 +53,12 @@ class Vec3():
             if not isinstance(n, (float, int)):
                 return False
         return True
-        
+    
+    def __eq__(self, other):
+        if isinstance(other, Vec3):
+            return self.x == other.x and self.y == other.y and self.z == other.z
+        return NotImplemented
+
     def __abs__(self):
         return self.norm()
     
@@ -87,19 +129,37 @@ class Vec3():
     def normalize(self):
         norm = self.norm()
         return Vec3(self.x / norm, self.y / norm, self.z / norm)
-
+    
 a = Vec3(5, 10, 15)
 b = Vec3(-2, -5, -10)
-assert a
 
-# Addition
-assert 1+a
-assert a+1
-assert a+b
-assert b+a
+# Basic
+assert a == Vec3(5, 10, 15)
 
-# Substraction
-assert 1-a
-assert a-1
-assert a-b
-assert b-a
+# Sum
+assert 1+a == a+1 == Vec3(6, 11, 16)
+assert a+b == b+a == Vec3(3, 5, 5)
+
+# Difference
+assert 1-a == Vec3(-4, -9, -14)
+assert a-1 == Vec3(4, 9, 14)
+assert a-b == Vec3(7, 15, 25)
+assert b-a == Vec3(-7, -15, -25)
+
+# Scalar Multiplication
+assert a*2 == 2*a == Vec3(10, 20, 30)
+
+# Scalar Division
+assert a/2 == Vec3(2.5, 5, 7.5)
+assert 2/a == Vec3(0.4, 0.2, 2/15)
+
+# Dot Product
+assert a*b == b*a == -210
+
+# Norm
+assert a.norm() == abs(a) == 350 ** 0.5
+
+# Normalize
+assert a.normalize() == Vec3(5/abs(a), 10/abs(a), 15/abs(a))
+
+print("✅ All vector modules are functioning properly. ✅")
