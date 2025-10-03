@@ -51,6 +51,12 @@ class Vec3():
     def __str__(self):
         return f"({self.x} ; {self.y} ; {self.z})"
 
+    def norm(self):
+        return (self.x*self.x + self.y*self.y + self.z*self.z) ** 0.5
+    
+    def normalize(self):
+        norm = self.norm()
+        return Vec3(self.x / norm, self.y / norm, self.z / norm)
 
 a = Vec3(5, 10, 15)
 print(a)
