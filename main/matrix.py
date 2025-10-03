@@ -105,7 +105,7 @@ class matrix():
         elif isinstance(other, (int, float)):
             return matrix([[col + other for col in row] for row in self.matrix])
         
-        raise TypeError(f"Unsupported operand type(s) for +: 'matrix' and '{type(other)}'.")
+        return NotImplemented
         
     def __radd__(self, other) -> 'matrix':
         return self.__add__(other)
@@ -118,26 +118,26 @@ class matrix():
         elif isinstance(other, (int, float)):
             return matrix([[col - other for col in row] for row in self.matrix])
         
-        raise TypeError(f"Unsupported operand type(s) for -: 'matrix' and '{type(other)}'.")
+        return NotImplemented
         
     def __rsub__(self, other) -> 'matrix':
         if isinstance(other, (int, float)):
             return matrix([[other - col for col in row] for row in self.matrix])
         
-        raise TypeError(f"Unsupported operand type(s) for -: 'matrix' and '{type(other)}'.")
+        return NotImplemented
 
     def __matmul__(self, other: 'matrix') -> 'matrix':
         if isinstance(other, matrix):
             self.__isMatMultiplicable(other)
             return matrix([[sum(a * b for a, b in zip(row_a, col_b)) for col_b in zip(*other)] for row_a in self.matrix])
         
-        raise TypeError(f"Unsupported operand type(s) for @: 'matrix' and '{type(other)}'.")
+        return NotImplemented
         
     def __rmatmul__(self, other: 'matrix') -> 'matrix':
         if isinstance(other, matrix):
             return other.__matmul__(self)
         
-        raise TypeError(f"Unsupported operand type(s) for @: 'matrix' and '{type(other)}'.")
+        return NotImplemented
 
     def __mul__(self, other):
         if isinstance(other, matrix):
@@ -146,7 +146,7 @@ class matrix():
         elif isinstance(other, (int, float)):
             return matrix([[col * other for col in row] for row in self.matrix])
         
-        raise TypeError(f"Unsupported operand type(s) for *: 'matrix' and '{type(other)}'.")
+        return NotImplemented
     
     def __rmul__(self, other):
         if isinstance(other, matrix):
@@ -155,7 +155,7 @@ class matrix():
         elif isinstance(other, (int, float)):
             return matrix([[col * other for col in row] for row in self.matrix])
         
-        raise TypeError(f"Unsupported operand type(s) for *: 'matrix' and '{type(other)}'.")
+        return NotImplemented
 
     def __truediv__(self, other):
         if isinstance(other, matrix):
@@ -166,13 +166,13 @@ class matrix():
         elif isinstance(other, (int, float)):
             return matrix([[col / other for col in row] for row in self.matrix])
         
-        raise TypeError(f"Unsupported operand type(s) for *: 'matrix' and '{type(other)}'.")
+        return NotImplemented
     
     def __rtruediv__(self, other):
         if isinstance(other, (int, float)):
             return matrix([[other / col for col in row] for row in self.matrix])
-        
-        raise TypeError(f"Unsupported operand type(s) for *: 'matrix' and '{type(other)}'.")
+
+        return NotImplemented
 
     def __repr__(self) -> str:
         return self
