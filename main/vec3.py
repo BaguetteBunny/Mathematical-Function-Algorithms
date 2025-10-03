@@ -1,5 +1,5 @@
-class Vec3():
-    def __init__(self, x, y, z):
+class Vec3:
+    def __init__(self, x = 0, y = 0, z = 0):
         self.x = x
         self.y = y
         self.z = z
@@ -53,7 +53,7 @@ class Vec3():
             if not isinstance(n, (float, int)):
                 return False
         return True
-    
+
     def __eq__(self, other):
         if isinstance(other, Vec3):
             return self.x == other.x and self.y == other.y and self.z == other.z
@@ -130,6 +130,16 @@ class Vec3():
         norm = self.norm()
         return Vec3(self.x / norm, self.y / norm, self.z / norm)
     
+    def cross(self, other: 'Vec3', theta: int | float = 3.141592653589793238, degree: bool = False):
+        if isinstance(other, Vec3):
+            return Vec3(
+                self.y*other.z - self.z*other.y,
+                self.z*other.x - self.x*other.z,
+                self.x*other.y - self.y*other.x
+            )
+        return NotImplemented
+
+
 a = Vec3(5, 10, 15)
 b = Vec3(-2, -5, -10)
 
@@ -155,6 +165,9 @@ assert 2/a == Vec3(0.4, 0.2, 2/15)
 
 # Dot Product
 assert a*b == b*a == -210
+
+# Cross Product
+assert a.cross(b) == 0-b.cross(a) == Vec3(-25, 20, -5)
 
 # Norm
 assert a.norm() == abs(a) == 350 ** 0.5
