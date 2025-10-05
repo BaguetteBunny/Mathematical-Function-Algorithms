@@ -52,7 +52,7 @@ class Vec3:
         for n in self.vector:
             if not isinstance(n, (float, int)):
                 return False
-        return self.x == self.y == self.z == 0
+        return (self.x == self.y == self.z == 0)
 
     def __pos__(self):
         return self
@@ -68,6 +68,9 @@ class Vec3:
     def __abs__(self):
         return self.norm()
     
+    def __len__(self):
+        return (self.x != 0) + (self.y != 0) + (self.z != 0)
+
     def __add__(self, other):
         if isinstance(other, (int, float)):
             return Vec3(self.x + other, self.y + other, self.z + other)
@@ -117,15 +120,24 @@ class Vec3:
             return Vec3(self.x * other.x, self.y * other.y, self.z * other.z)
         return NotImplemented
 
+    def __bytes__(self):
+        return bytes(self.vector)
+
     def __float__(self):
-        return Vec3(float(self.x), float(self.y), float(self.z))
+        return float(self.norm())
     
     def __int__(self):
-        return Vec3(int(self.x), int(self.y), int(self.z))
+        return int(self.norm())
+
+    def __bool__(self):
+        return self.NULL
 
     def __str__(self):
+        return NotImplemented
+
+    def __repr__(self):
         return f"({self.x} ; {self.y} ; {self.z})"
-    
+
     def dot(self, other: 'Vec3'):
         if isinstance(other, Vec3):
             return self.x*other.x + self.y*other.y + self.z*other.z
@@ -152,6 +164,9 @@ class Vec3:
         if isinstance(v, Vec3) and isinstance(w, Vec3):
             return self * v.cross(w)
 
+    def entryabs(self):
+        return Vec3(abs(self.x), abs(self.y), abs(self.z))
+
 a = Vec3(5, 10, 15)
 b = Vec3(-2, -5, -10)
 c = Vec3(-1.5, 60, 0)
@@ -159,6 +174,8 @@ c = Vec3(-1.5, 60, 0)
 # Basic
 assert 0+a == +a == a == Vec3(5, 10, 15)
 assert 0-a == -a
+assert int(c) == int(c.norm())
+assert float(c) == c.norm()
 
 # Sum
 assert 1+a == a+1 == Vec3(6, 11, 16)
@@ -179,6 +196,9 @@ assert 2/a == Vec3(0.4, 0.2, 2/15)
 
 # Entrywise Product
 assert a @ b == b @ a == Vec3(-10, -50, -150)
+
+# Entrywise Absolute Value
+assert b.entryabs() == Vec3(2, 5, 10)
 
 # Dot Product
 assert a*b == b*a == -210
