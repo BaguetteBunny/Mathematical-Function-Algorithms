@@ -115,6 +115,16 @@ class Vec3:
             return Vec3(other / self.x, other / self.y, other / self.z)
         return NotImplemented
     
+    def __floordiv__(self, other):
+        if isinstance(other, (int, float)):
+            return Vec3(self.x // other, self.y // other, self.z // other)
+        return NotImplemented
+    
+    def __rfloordiv__(self, other):
+        if isinstance(other, (int, float)):
+            return Vec3(other // self.x, other // self.y, other // self.z)
+        return NotImplemented
+    
     def __matmul__(self, other):
         if isinstance(other, Vec3):
             return Vec3(self.x * other.x, self.y * other.y, self.z * other.z)
@@ -130,10 +140,10 @@ class Vec3:
         return int(self.norm())
 
     def __bool__(self):
-        return self.NULL
+        return not self.NULL
 
     def __str__(self):
-        return NotImplemented
+        return f"({self.x} ; {self.y} ; {self.z})"
 
     def __repr__(self):
         return f"({self.x} ; {self.y} ; {self.z})"
@@ -166,6 +176,20 @@ class Vec3:
 
     def entryabs(self):
         return Vec3(abs(self.x), abs(self.y), abs(self.z))
+    
+    def entrydiv(self, other):
+        if isinstance(other, (int, float)):
+            return self.__truediv__(other)
+        elif isinstance(other, Vec3):
+            return Vec3(self.x / other.x, self.y / other.y, self.z / other.z)
+        return NotImplemented
+    
+    def entryfloordiv(self, other):
+        if isinstance(other, (int, float)):
+            return self.__truediv__(other)
+        elif isinstance(other, Vec3):
+            return Vec3(self.x // other.x, self.y // other.y, self.z // other.z)
+        return NotImplemented
 
 a = Vec3(5, 10, 15)
 b = Vec3(-2, -5, -10)
@@ -176,6 +200,9 @@ assert 0+a == +a == a == Vec3(5, 10, 15)
 assert 0-a == -a
 assert int(c) == int(c.norm())
 assert float(c) == c.norm()
+assert a
+assert b
+assert c
 
 # Sum
 assert 1+a == a+1 == Vec3(6, 11, 16)
@@ -196,6 +223,10 @@ assert 2/a == Vec3(0.4, 0.2, 2/15)
 
 # Entrywise Product
 assert a @ b == b @ a == Vec3(-10, -50, -150)
+
+# Entrywise Quotient
+assert a.entrydiv(b) == Vec3(-2.5, -2.0, -1.5)
+assert a.entryfloordiv(b) == Vec3(-3, -2, -2)
 
 # Entrywise Absolute Value
 assert b.entryabs() == Vec3(2, 5, 10)
