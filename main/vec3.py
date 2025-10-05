@@ -130,6 +130,35 @@ class Vec3:
         if isinstance(other, Vec3):
             return Vec3(self.x * other.x, self.y * other.y, self.z * other.z)
         return NotImplemented
+    
+    def __rmatmul__(self, _):
+        return NotImplemented
+    
+    def __mod__(self, other):
+        if isinstance(other, (float, int)):
+            return Vec3(self.x % other, self.y % other, self.z % other)
+        return NotImplemented
+    
+    def __rmod__(self, other):
+        if isinstance(other, (float, int)):
+            return Vec3(other % self.x, other % self.y, other % self.z)
+        return NotImplemented
+    
+    def __divmod__(self, other):
+        if not isinstance(other, (tuple, list)) and not len(other) == 2:
+            return NotImplemented
+        
+        if isinstance(other[0], (int, float)) and isinstance(other[1], (int, float)):
+            return (self.__floordiv__(other), self.__mod__(other))
+        return NotImplemented
+    
+    def __rdivmod__(self, other):
+        if not isinstance(other, (tuple, list)) and not len(other) == 2:
+            return NotImplemented
+        
+        if isinstance(other[0], (int, float)) and isinstance(other[1], (int, float)):
+            return (self.__rfloordiv__(other), self.__rmod__(other))
+        return NotImplemented
 
     def __bytes__(self):
         if self.INTEGER:
