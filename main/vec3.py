@@ -6,7 +6,8 @@ class Vec3:
         self.vector = (x, y, z)
 
         self.NULL = self.__isNullVector()
-        self.NUMERICAL = self.__isNumericalVector()
+        self.INTEGER = self.__isIntegerVector()
+        self.NUMERICAL = True if self.__isIntegerVector() else self.__isNumericalVector()
 
     def check_validity(self):
         try:
@@ -48,11 +49,11 @@ class Vec3:
     def __isNullVector(self):
         return self.x == self.y == self.z == 0
         
+    def __isIntegerVector(self):
+        return not self.__isNullVector() and isinstance(self.x, int) and isinstance(self.y, int) and isinstance(self.z, int)
+
     def __isNumericalVector(self):
-        for n in self.vector:
-            if not isinstance(n, (float, int)):
-                return False
-        return (self.x == self.y == self.z == 0)
+        return not self.__isNullVector() and isinstance(self.x, (int, float)) and isinstance(self.y, (int, float)) and isinstance(self.z, (int, float))
 
     def __pos__(self):
         return self
@@ -131,7 +132,9 @@ class Vec3:
         return NotImplemented
 
     def __bytes__(self):
-        return bytes(self.vector)
+        if self.INTEGER:
+            return bytes(self.vector)
+        return NotImplemented
 
     def __float__(self):
         return float(self.norm())
@@ -146,7 +149,7 @@ class Vec3:
         return f"({self.x} ; {self.y} ; {self.z})"
 
     def __repr__(self):
-        return f"({self.x} ; {self.y} ; {self.z})"
+            return f"({self.x} ; {self.y} ; {self.z}) - Norm: {self.norm()} - isNull: {self.NULL} - isNumerical: {self.NUMERICAL}"
 
     def dot(self, other: 'Vec3'):
         if isinstance(other, Vec3):
@@ -200,6 +203,8 @@ assert 0+a == +a == a == Vec3(5, 10, 15)
 assert 0-a == -a
 assert int(c) == int(c.norm())
 assert float(c) == c.norm()
+assert bytes(a)
+assert str(a) == f"({a.x} ; {a.y} ; {a.z})"
 assert a
 assert b
 assert c
